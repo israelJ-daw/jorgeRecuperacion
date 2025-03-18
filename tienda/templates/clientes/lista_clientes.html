@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mi Tienda</title>
+</head>
+<body>
+
+    <h1>Todos los clientes </h1>
+{% for cliente in clientes %}
+
+    <ul>
+        <li>  Nombre: {{cliente.nombre}} </li>
+ 
+        <li> Apellidos: {{cliente.apellidos}} </li>
+
+        <li> Usuario: {{cliente.usuario}} </li>
+    </ul>
+{% endfor %}
+
+</body>
+</html>
