@@ -1,0 +1,20 @@
+
+<ul>
+    <li>  Nombre: {{cliente.nombre|capfirst}} </li>
+
+    <li> Apellidos: {{cliente.apellidos|capfirst}} </li>
+
+    <li> Usuario: {{cliente.usuario|capfirst}} </li>
+</ul>
+
+{% if cliente.id == 3 %}
+<h1>no eres el primer cliente</h1>
+
+{% elif cliente.id == 2 %}
+
+<h1>eres el segundo cliente</h1>
+
+
+{% else %}
+<h1>Eres el primer cliente</h1>
+{% endif %} 

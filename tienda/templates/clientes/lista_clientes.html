@@ -1,21 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Mi Tienda</title>
-</head>
-<body>
+{% extends "estructura/principal.html" %}
 
-    <h1>Todos los clientes </h1>
+{% block contenido%}
 {% for cliente in clientes %}
 
-    <ul>
-        <li>  Nombre: {{cliente.nombre}} </li>
- 
-        <li> Apellidos: {{cliente.apellidos}} </li>
+    {% include "clientes/clientes.html" %}
 
-        <li> Usuario: {{cliente.usuario}} </li>
-    </ul>
+{% empty %}
+
+<p>No existen clientes</p>
+
 {% endfor %}
-
-</body>
-</html>
+{% endblock %}
