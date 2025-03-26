@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    {% block titulo%}
+    {% block titulo %}
         <title>Mi Tienda Online</title>
     {% endblock %}
 
@@ -10,17 +9,15 @@
     {% bootstrap_css %}
 </head>
 <body>
-    <h1>Esto es la Cabezera</h1>
 
     {% include "estructura/menu.html" %}
 
+    <div class="container mt-4">
+        {% block contenido %}
+        {% endblock %}
+    </div>
 
-    {% block contenido %}
-    {% endblock %}
-
-    {% include "estructura/pie.html"%}
-
-
-    {% bootstrap_javascript %}
+    {% include "estructura/pie.html" %}
+    
 </body>
 </html>

@@ -1,8 +1,13 @@
 {% extends "estructura/principal.html" %}
+
 {% block titulo %}
-    <title>Esta es mi pagina de inicio</title>
+    <title>Inicio</title>
 {% endblock %}
 
 {% block contenido %}
-    <h1>ESTA ES LA PAGINA DE INICIO</h1>
-{% endblock%}
+    <div class="text-center mt-5">
+        <h1>Bienvenido a la Tienda</h1>
+        <p class="lead">Aquí puedes gestionar clientes y productos.</p>
+        <a href="{% url 'lista_clientes' %}" class="btn btn-primary">📋 Ver Clientes</a>
+    </div>
+{% endblock %}

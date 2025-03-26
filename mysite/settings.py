@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-d7&st5nj428gb@afbs2+ney#d95*v4h#$15@9iu9*5#tuy6qnv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
 # Application definition
 
@@ -129,3 +129,9 @@ STATIC_ROOT = BASE_DIR / 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INTERNAL_IPS = ["127.0.0.1"]
+
+AUTH_USER_MODEL = 'tienda.Usuario'
+
+LOGOUT_REDIRECT_URL = 'index' 
+
+LOGIN_REDIRECT_URL = 'index' 
