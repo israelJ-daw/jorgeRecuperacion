@@ -17,8 +17,8 @@
                 </li>
   
                 {% if user.is_authenticated %}
-                    <!-- Mostrar solo si el usuario ha iniciado sesión -->
-                    <li class="nav-item">
+
+                <li class="nav-item">
                         <a class="nav-link" href="#">👤 {{ user.username }}</a>
                     </li>
                     <form method="post" action="{% url 'logout' %}">
@@ -27,8 +27,8 @@
                     </form>
                     
                 {% else %}
-                    <!-- Mostrar solo si el usuario NO ha iniciado sesión -->
-                    <li class="nav-item">
+
+                <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">🔑 Iniciar sesión</a>
                     </li>
                     <li class="nav-item">

@@ -5,8 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 
 class RegistroForm(UserCreationForm):  
     ROLES = (
-        (Usuario.CLIENTE, 'Cliente'),
-        (Usuario.ADMIN, 'Administrador'),
+        (Usuario.CLIENTE, 'cliente'),
+        (Usuario.VENDEDOR, 'vendedor'),
+
     )
     
     rol = forms.ChoiceField(choices=ROLES)

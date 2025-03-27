@@ -1,10 +1,8 @@
 
 <ul>
-    <li>  Nombre: {{cliente.nombre|capfirst}} </li>
+    <li>  Nombre de usuario: {{cliente.Usuario.username|capfirst}} </li>
 
-    <li> Apellidos: {{cliente.apellidos|capfirst}} </li>
-
-    <li> Usuario: {{cliente.usuario|capfirst}} </li>
+    <li> Email: {{cliente.Usuario.email|capfirst}} </li>
 </ul>
 
 {% if cliente.id == 3 %}

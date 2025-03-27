@@ -2,19 +2,26 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class Usuario(AbstractUser):  
-    CLIENTE = 1
-    ADMIN = 2
+    ADMINISTRADOR = 1
+    CLIENTE = 2
+    VENDEDOR = 3
     ROLES = (
-        (CLIENTE, 'Cliente'),
-        (ADMIN, 'Administrador'),
+        (ADMINISTRADOR, 'administrador'),
+        (CLIENTE, 'cliente'),
+        (VENDEDOR, 'Vendedor')
     )
     rol = models.PositiveSmallIntegerField(choices=ROLES, default=CLIENTE)
 
 class Cliente(models.Model):
-    usuario = models.CharField(max_length=50) 
-    nombre = models.CharField(max_length=50)
-    apellidos = models.CharField(max_length=50)
+  
+  Usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+  
+  def __str__(self):
+     return self.Usuario.username
 
-class Administrador(models.Model):
-    usuario = models.CharField(max_length=50) 
-    area_responsabilidad = models.CharField(max_length=100)
+
+
+
+class Vendedor(models.Model):
+    
+  Usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
