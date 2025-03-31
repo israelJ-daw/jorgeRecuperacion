@@ -20,8 +20,10 @@ class Cliente(models.Model):
      return self.Usuario.username
 
 
-
-
 class Vendedor(models.Model):
     
   Usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+
+   
+  def __str__(self):
+     return self.Usuario.username

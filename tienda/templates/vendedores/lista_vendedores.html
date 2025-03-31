@@ -1,0 +1,13 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido%}
+{% for vendedor in vendedores %}
+
+    {% include "vendedores/vendedor.html" %}
+
+{% empty %}
+
+<p>No existen Vendedores</p>
+
+{% endfor %}
+{% endblock %}

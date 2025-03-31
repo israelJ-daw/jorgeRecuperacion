@@ -30,8 +30,21 @@ def registrar_usuario(request):
                 grupo.user_set.add(user)
                 cliente = Cliente.objects.create(Usuario=user)
                 cliente.save()
+            elif (rol == Usuario.VENDEDOR):
+                grupo=Group.objects.get(name='vendedores')
+                grupo.user_set.add(user)
+                vendedor= Vendedor.objects.create(Usuario=user)
+                vendedor.save()
+                
+            login(request,user)    
             return redirect('index')
         
     else:
         formulario = RegistroForm()   
     return render(request, 'registro/signup.html', {'formulario': formulario})
+
+
+def lista_vendedores(request):
+    vendedores = Vendedor.objects.all()
+
+    return render (request, 'vendedores/lista_vendedores.html', {'vendedores': vendedores})

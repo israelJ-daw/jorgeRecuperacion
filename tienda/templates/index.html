@@ -7,7 +7,10 @@
 {% block contenido %}
     <div class="text-center mt-5">
         <h1>Bienvenido a la Tienda</h1>
-        <p class="lead">Aquí puedes gestionar clientes y productos.</p>
         <a href="{% url 'lista_clientes' %}" class="btn btn-primary">📋 Ver Clientes</a>
+    </div>
+    <div class="text-center mt-5" >
+       <h2>Vendedores</h2> 
+        <a href="{% url 'lista_vendedores' %}" class="btn btn-primary">📋 Ver Vendedores</a>
     </div>
 {% endblock %}
