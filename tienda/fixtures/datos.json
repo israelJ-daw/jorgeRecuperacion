@@ -26,6 +26,32 @@
     }
 },
 {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2025-04-01T10:21:41.951",
+        "user": 2,
+        "content_type": 3,
+        "object_id": "1",
+        "object_repr": "vendedores",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Permissions\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2025-04-01T10:38:58.528",
+        "user": 2,
+        "content_type": 6,
+        "object_id": "2",
+        "object_repr": "admin",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Rol\"]}}]"
+    }
+},
+{
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -314,11 +340,52 @@
     }
 },
 {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add coche",
+        "content_type": 9,
+        "codename": "add_coche"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change coche",
+        "content_type": 9,
+        "codename": "change_coche"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete coche",
+        "content_type": 9,
+        "codename": "delete_coche"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view coche",
+        "content_type": 9,
+        "codename": "view_coche"
+    }
+},
+{
     "model": "auth.group",
     "pk": 1,
     "fields": {
         "name": "vendedores",
-        "permissions": []
+        "permissions": [
+            25,
+            26,
+            27,
+            28
+        ]
     }
 },
 {
@@ -394,6 +461,14 @@
     }
 },
 {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "tienda",
+        "model": "coche"
+    }
+},
+{
     "model": "tienda.usuario",
     "pk": 1,
     "fields": {
@@ -417,7 +492,7 @@
     "pk": 2,
     "fields": {
         "password": "pbkdf2_sha256$870000$5yd22oUSNj5LMWetbT7oKQ$Wj9I/axr2H/IOAFqvO8Ylema1KD3uw6zcDIR6Qryhag=",
-        "last_login": "2025-03-31T18:22:07.616",
+        "last_login": "2025-04-01T10:34:10",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -425,8 +500,8 @@
         "email": "",
         "is_staff": true,
         "is_active": true,
-        "date_joined": "2025-03-31T18:22:01.792",
-        "rol": 2,
+        "date_joined": "2025-03-31T18:22:01",
+        "rol": 1,
         "groups": [],
         "user_permissions": []
     }
@@ -436,7 +511,7 @@
     "pk": 3,
     "fields": {
         "password": "pbkdf2_sha256$870000$wonqBwdLUM6P9YWQizEtGJ$8ryIWmzZIQNobwrxsqv0uY3w+RDFTX7fXnkkX9QBens=",
-        "last_login": "2025-03-31T18:23:08.682",
+        "last_login": "2025-04-01T10:33:41.085",
         "is_superuser": false,
         "username": "cliente2",
         "first_name": "",
@@ -457,7 +532,7 @@
     "pk": 4,
     "fields": {
         "password": "pbkdf2_sha256$870000$QutMMpXzta9CameRA7ULdt$Ht+A0FIONz/at4Ofm+qif+sOqTNygcf54Ijwkr6BQGI=",
-        "last_login": "2025-03-31T18:23:42.825",
+        "last_login": "2025-04-01T09:53:03.364",
         "is_superuser": false,
         "username": "vendedor1",
         "first_name": "",
@@ -466,6 +541,27 @@
         "is_staff": false,
         "is_active": true,
         "date_joined": "2025-03-31T18:23:30.687",
+        "rol": 3,
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "tienda.usuario",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$Wgc2inD0lbJ5zYJAzWus3g$f6YggpRmtr0j4eeOw0cWzZGypjZfalZVvX2shYpbe0Y=",
+        "last_login": "2025-04-01T10:31:02.123",
+        "is_superuser": false,
+        "username": "vendedor2",
+        "first_name": "",
+        "last_name": "",
+        "email": "vendedor2@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-04-01T09:59:05.660",
         "rol": 3,
         "groups": [
             1
@@ -485,6 +581,13 @@
     "pk": 1,
     "fields": {
         "Usuario": 4
+    }
+},
+{
+    "model": "tienda.vendedor",
+    "pk": 2,
+    "fields": {
+        "Usuario": 5
     }
 }
 ]

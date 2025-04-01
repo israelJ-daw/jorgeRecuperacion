@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import *
 from django.contrib.auth.models import Group
-
+from django.contrib.auth.decorators import permission_required
 
 
 from .models import *
@@ -11,7 +11,7 @@ from .models import *
 def index(request):
     return render(request, 'index.html', {})
 
-
+@permission_required('tienda.view_cliente')
 def lista_clientes(request):
     clientes = Cliente.objects.all()
     
@@ -41,7 +41,7 @@ def registrar_usuario(request):
         
     else:
         formulario = RegistroForm()   
-    return render(request, 'registro/signup.html', {'formulario': formulario})
+    return render(request, 'registration/signup.html', {'formulario': formulario})
 
 
 def lista_vendedores(request):

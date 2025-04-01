@@ -12,15 +12,24 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'index' %}">🏠 Inicio</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'lista_clientes' %}">📋 Lista de clientes</a>
-                </li>
   
-                {% if user.is_authenticated %}
+                {% if request.user.is_authenticated %}
 
                 <li class="nav-item">
-                        <a class="nav-link" href="#">👤 {{ user.username }}</a>
+                        <a class="nav-link"> Nombre: {{ user.username }}</a>
                     </li>
+                    
+                    <li>
+                        {% if request.user.rol == 2 %}
+                            <a class="nav-link"> Rol: Cliente </a>
+                        {% elif request.user.rol == 3 %}
+                            <a class="nav-link"> Rol: Vendedor </a>
+
+                        {% else %}
+                            <a class="nav-link"> Rol: Admin </a>
+                        {% endif %}
+                    </li>    
+
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">Cerrar sesión</button>

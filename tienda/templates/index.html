@@ -5,12 +5,17 @@
 {% endblock %}
 
 {% block contenido %}
+    {% if perms.tienda.view_cliente %}
     <div class="text-center mt-5">
         <h1>Bienvenido a la Tienda</h1>
         <a href="{% url 'lista_clientes' %}" class="btn btn-primary">📋 Ver Clientes</a>
     </div>
+    {% endif %}
+
+    {% if user.rol == 1  %}
     <div class="text-center mt-5" >
        <h2>Vendedores</h2> 
         <a href="{% url 'lista_vendedores' %}" class="btn btn-primary">📋 Ver Vendedores</a>
     </div>
+    {% endif %}
 {% endblock %}

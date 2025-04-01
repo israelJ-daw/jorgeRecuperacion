@@ -27,3 +27,9 @@ class Vendedor(models.Model):
    
   def __str__(self):
      return self.Usuario.username
+
+
+class Coche(models.Model):
+  nombre = models.CharField(max_length=50),
+  anyo = models.DateField(auto_now=False, auto_now_add=False)
+  precio = models.FloatField()
