@@ -30,6 +30,6 @@ class Vendedor(models.Model):
 
 
 class Coche(models.Model):
-  nombre = models.CharField(max_length=50),
+  nombre = models.CharField(max_length=50)
   anyo = models.DateField(auto_now=False, auto_now_add=False)
   precio = models.FloatField()

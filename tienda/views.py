@@ -48,3 +48,9 @@ def lista_vendedores(request):
     vendedores = Vendedor.objects.all()
 
     return render (request, 'vendedores/lista_vendedores.html', {'vendedores': vendedores})
+
+
+def lista_coches(request):
+    coches = Coche.objects.all()
+
+    return render (request, 'coches/lista_coche.html', {'coches': coches})

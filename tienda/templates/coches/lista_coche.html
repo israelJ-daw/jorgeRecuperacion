@@ -1,0 +1,13 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido%}
+{% for coche in coches %}
+
+    {% include "coches/coches.html" %}
+
+{% empty %}
+
+<p>No existen coches</p>
+
+{% endfor %}
+{% endblock %}

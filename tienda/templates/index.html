@@ -18,4 +18,11 @@
         <a href="{% url 'lista_vendedores' %}" class="btn btn-primary">📋 Ver Vendedores</a>
     </div>
     {% endif %}
+
+    {% if perms.tienda.view_coche %}
+    <div class="text-center mt-5" >
+       <h2>Coches</h2> 
+        <a href="{% url 'lista_coche' %}" class="btn btn-primary"> 🚗 Ver Coches</a>
+    </div>
+    {% endif %}
 {% endblock %}
