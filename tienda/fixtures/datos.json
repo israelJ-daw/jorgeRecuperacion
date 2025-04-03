@@ -143,6 +143,149 @@
     }
 },
 {
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+        "action_time": "2025-04-03T11:08:52.144",
+        "user": 1,
+        "content_type": 3,
+        "object_id": "2",
+        "object_repr": "vendedores",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Permissions\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "13",
+        "object_repr": "Coche object (13)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "12",
+        "object_repr": "Coche object (12)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "11",
+        "object_repr": "Coche object (11)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "10",
+        "object_repr": "Coche object (10)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "9",
+        "object_repr": "Coche object (9)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "8",
+        "object_repr": "Coche object (8)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "7",
+        "object_repr": "Coche object (7)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "6",
+        "object_repr": "Coche object (6)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "5",
+        "object_repr": "Coche object (5)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+        "action_time": "2025-04-03T11:13:30.151",
+        "user": 1,
+        "content_type": 6,
+        "object_id": "4",
+        "object_repr": "Coche object (4)",
+        "action_flag": 3,
+        "change_message": ""
+    }
+},
+{
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -475,7 +618,11 @@
             29,
             30,
             31,
-            32
+            32,
+            21,
+            22,
+            23,
+            24
         ]
     }
 },
@@ -562,11 +709,19 @@
     }
 },
 {
+    "model": "sessions.session",
+    "pk": "5823jp9n2aaqz4fxj4tndqz3grvmuroo",
+    "fields": {
+        "session_data": ".eJxVjEEOwiAQRe_C2pDOwBRw6d4zkIFBqZo2Ke3KeHfbpAvdvvf-f6vI61Lj2socB1FnBer0yxLnZxl3IQ8e75PO07jMQ9J7og_b9HWS8roc7d9B5Va3tTcOepbAzliPZIJLElyXBYyjYhHJdsDogQgx95ag3yhwuEkyWEh9vqUSNk0:1u0GdC:Kj_uTlazq7n4qJ7MGbKt0YyuvVZXOaNCBmtYRed5QFc",
+        "expire_date": "2025-04-17T11:13:02.042"
+    }
+},
+{
     "model": "tienda.usuario",
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$870000$YD2ouTgmQYkZKqc0IBsb2f$5tUa+Cxe/iuOSueEyDvIVgS2SNF5sBU+MZOfvWEivng=",
-        "last_login": "2025-04-01T23:20:38.257",
+        "last_login": "2025-04-03T11:13:01.989",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -585,7 +740,7 @@
     "pk": 2,
     "fields": {
         "password": "pbkdf2_sha256$870000$E9I7Ro99rbZVlnivKhw0i6$HEikvv8YUyIGBReDyMGMTZz5kGcZgoe/JOfBt4Z9yAo=",
-        "last_login": "2025-04-01T23:21:31.832",
+        "last_login": "2025-04-03T11:09:25.619",
         "is_superuser": false,
         "username": "vendedor1",
         "first_name": "",
@@ -606,7 +761,7 @@
     "pk": 3,
     "fields": {
         "password": "pbkdf2_sha256$870000$DMZbQR4DAibKvSr9krv732$Z1Kg3lsJcN0FANB5AVGnfb7bPsqpbZtW3qD0a+j23FQ=",
-        "last_login": "2025-04-01T23:21:11.607",
+        "last_login": "2025-04-03T09:28:20.981",
         "is_superuser": false,
         "username": "cliente1",
         "first_name": "",
@@ -652,6 +807,15 @@
         "nombre": "Citroen Xsara Piccaso",
         "anyo": "2021-08-11",
         "precio": 3500.5
+    }
+},
+{
+    "model": "tienda.coche",
+    "pk": 3,
+    "fields": {
+        "nombre": "renault clio",
+        "anyo": "2024-06-13",
+        "precio": 4000.0
     }
 }
 ]
