@@ -1,0 +1,15 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+    <ul>
+        {% for tienda in tiendas %}
+            <li>
+                Nombre Tienda: {{tienda.nombre|capfirst}}<br>
+                Dirección: {{tienda.direccion|capfirst}}<br>
+                Teléfono: {{tienda.telefono|capfirst}}
+            </li>
+        {% empty %}
+            <p>No existen tiendas.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}

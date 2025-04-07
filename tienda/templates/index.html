@@ -31,6 +31,21 @@
        <h2> Crear Coches</h2> 
         <a href="{% url 'crear_coche' %}" class="btn btn-primary"> 🚗 Crear Coches</a>
     </div>
+    {% endif%}ç
+
+    {% if user.rol == 3 %}
+    <div class="text-center mt-5" >
+       <h2> Crear Tienda</h2> 
+        <a href="{% url 'crear_tienda' %}" class="btn btn-primary"> 🤑 Crear Tienda</a>
+    </div>
+    {% endif%}
+
+
+    {% if user.rol == 3 %}
+    <div class="text-center mt-5" >
+       <h2> Ver Tiendas</h2> 
+        <a href="{% url 'lista_tienda' %}" class="btn btn-primary"> 👀 Ver Tienda</a>
+    </div>
     {% endif%}
 
 {% endblock %}

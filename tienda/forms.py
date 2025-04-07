@@ -2,6 +2,7 @@ from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm 
+from datetime import datetime
 
 
 class RegistroForm(UserCreationForm):  
@@ -34,9 +35,45 @@ class cocheModelForms(ModelForm):
         
         #obetener el campo()
         nombre = self.cleaned_data.get('nombre')
+        anyo = self.cleaned_data.get('anyo')
+        anyo_actual =  datetime.now().year
+        precio= self.cleaned_data.get('precio')
         
         #validaciones
         if len(nombre) < 10:
             self.add_error('nombre', "Mas de 10 caracteres")
-             
-        return self.cleaned_data     
+
+        if precio < 0:
+            self.add_error('precio' , 'El precio tiene que ser mayor de 0!')
+
+        if anyo.year < 1886 or anyo.year > anyo_actual:
+            self.add_error('anyo', 'El año debe estar entre 1886 y ' + str(anyo_actual))
+
+
+        return self.cleaned_data  
+
+
+class TiendaModelForms(ModelForm):
+    class Meta:
+        model = Tienda
+        fields = ['nombre' , 'direccion' , 'telefono']
+        help_texts = {
+            'nombre' : ("Nombre de la tienda"),
+            'direccion': ("Direccion de la tienda")
+        }
+
+    def clean(self):
+        super().clean()
+
+        nombre = self.cleaned_data.get('nombre')
+        direccion = self.cleaned_data.get('direccion')
+        telefono= self.cleaned_data.get('telefono')
+
+        if len(nombre) < 10:
+            self.add_error('nombre', "Mas de 10 caracteres")
+
+        if len(direccion) < 10:
+            self.add_error('direccion', "Especifica donde se encuentra la tienda")
+
+        if len(telefono) < 5:
+            self.add_error('telefono', "Escriba un telefono Real!!")

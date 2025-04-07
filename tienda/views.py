@@ -66,3 +66,20 @@ def crear_coche(request):
     else:
         formulario = cocheModelForms()
     return render (request, 'coches/crear_coche.html', {'formulario': formulario})
+
+
+def crear_tienda(request):
+    if request.method == 'POST':
+        formulario = TiendaModelForms(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect ("lista_tienda")
+    else:
+        formulario = TiendaModelForms()
+
+    return render (request, 'tienda/crear_tienda.html', {'formulario': formulario})
+    
+
+def lista_tienda(request):
+    tiendas = Tienda.objects.all() 
+    return render(request, 'tienda/lista_tienda.html', {'tiendas': tiendas})

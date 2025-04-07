@@ -33,3 +33,9 @@ class Coche(models.Model):
   nombre = models.CharField(max_length=50)
   anyo = models.DateField(auto_now=False, auto_now_add=False)
   precio = models.FloatField()
+
+
+class Tienda(models.Model):
+  nombre = models.CharField(max_length=50) 
+  direccion = models.CharField(max_length=100) 
+  telefono = models.CharField(max_length=30)
