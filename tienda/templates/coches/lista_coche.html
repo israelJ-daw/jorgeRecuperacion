@@ -5,6 +5,8 @@
 
     {% include "coches/coches.html" %}
 
+    <a class = "btn btn-outline-primary" href= "{% url 'coche_detalle' coche.id %}">Mas Informacion</a>
+
 {% empty %}
 
 <p>No existen coches</p>

@@ -5,6 +5,7 @@ from django.forms import ModelForm
 from datetime import datetime
 
 
+
 class RegistroForm(UserCreationForm):  
     ROLES = (
         (Usuario.CLIENTE, 'cliente'),
@@ -28,7 +29,7 @@ class cocheModelForms(ModelForm):
             'nombre': ("100 caracteres Maximos"),
             'precio' : ("Escriba un precio realista"), 
         }
-        widgets = {'anyo' : forms.DateInput(format="Y-%m-%d", attrs={"type": "date"})}
+        widgets = {'anyo' : forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})}
         
     def clean(self):
         super().clean()

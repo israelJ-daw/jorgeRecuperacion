@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from .forms import *
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import permission_required
-
+from django.contrib import messages
 
 from .models import *
 # Create your views here.
@@ -62,6 +62,7 @@ def crear_coche(request):
         if formulario.is_valid():
             print ("Es validoo!")
             formulario.save()
+            messages.success(request, 'Se ha creado perfectamente')
             return redirect ("lista_coche")
     else:
         formulario = cocheModelForms()
@@ -83,3 +84,22 @@ def crear_tienda(request):
 def lista_tienda(request):
     tiendas = Tienda.objects.all() 
     return render(request, 'tienda/lista_tienda.html', {'tiendas': tiendas})
+
+
+def coche_detalle(request, id_coche):
+    coche = Coche.objects.get(id=id_coche)
+    return render (request, 'coches/coche_detalle.html',{'coche' : coche}) 
+
+def coche_editar(request, id_coche):
+    coche = Coche.objects.get(id = id_coche)
+    
+    if request.method == "POST": 
+        formulario = cocheModelForms(request.POST, instance=coche)
+        if formulario.is_valid:
+            formulario.save()
+            messages.success(request, 'Se ha modificado perfectamente')            
+            return redirect ('coche_detalle', id_coche=id_coche) 
+    else:
+        formulario = cocheModelForms(instance=coche)     
+        
+    return render (request, 'coches/coche_editar.html', {'formulario' : formulario, 'lola' : coche })   
