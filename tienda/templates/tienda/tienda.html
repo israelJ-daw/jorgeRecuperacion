@@ -1,0 +1,10 @@
+<ul>
+    <li>
+        Nombre Tienda: {{tienda.nombre|capfirst}}<br>
+        Dirección: {{tienda.direccion|capfirst}}<br>
+        Teléfono: {{tienda.telefono|capfirst}}
+    </li>
+</ul>  
+
+<a class = "btn btn-outline-primary" href= "{% url 'tienda_editar' tienda.id %}">Editar</a>
+

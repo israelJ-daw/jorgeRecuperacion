@@ -98,8 +98,28 @@ def coche_editar(request, id_coche):
         if formulario.is_valid:
             formulario.save()
             messages.success(request, 'Se ha modificado perfectamente')            
-            return redirect ('coche_detalle', id_coche=id_coche) 
+            return redirect ('coche_detalle', id_coche = id_coche) 
     else:
         formulario = cocheModelForms(instance=coche)     
         
     return render (request, 'coches/coche_editar.html', {'formulario' : formulario, 'lola' : coche })   
+
+
+def tienda_detalle(request, id_tienda):
+    tienda = Tienda.objects.get(id=id_tienda)
+    return render (request, 'tienda/tienda_detalle.html',{'tienda' : tienda}) 
+
+
+def tienda_editar(request, id_tienda):
+    tienda = Tienda.objects.get(id = id_tienda)
+    
+    if request.method == "POST": 
+        formulario = TiendaModelForms(request.POST, instance=tienda)
+        if formulario.is_valid:
+            formulario.save()
+            messages.success(request, 'Se ha modificado perfectamente')            
+            return redirect ('tienda_detalle', id_tienda = id_tienda) 
+    else:
+        formulario = TiendaModelForms(instance=tienda)     
+        
+    return render (request, 'tienda/tienda_editar.html', {'formulario' : formulario, 'tienda' : tienda })   

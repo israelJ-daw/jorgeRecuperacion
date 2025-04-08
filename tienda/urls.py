@@ -13,6 +13,10 @@ urlpatterns = [
     path('crear/coches/', views.crear_coche, name='crear_coche'), 
     path('crear/tienda/', views.crear_tienda, name='crear_tienda'), 
     path('tiendas/', views.lista_tienda,name= 'lista_tienda'),
+    #coches
     path('coche/<int:id_coche>', views.coche_detalle, name='coche_detalle'),
     path('coche/<int:id_coche>/editar', views.coche_editar, name='coche_editar'),
+    #tiendas
+    path('tienda/<int:id_tienda>', views.tienda_detalle, name='tienda_detalle'),
+    path('tienda/<int:id_tienda>/editar', views.tienda_editar, name='tienda_editar'),
 ] 
