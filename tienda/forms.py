@@ -78,3 +78,12 @@ class TiendaModelForms(ModelForm):
 
         if len(telefono) < 5:
             self.add_error('telefono', "Escriba un telefono Real!!")
+            
+class CuentaModelForms(ModelForm):
+    class Meta:
+        model = CuentaBancaria 
+        fields = ['iban', 'banco', 'tipo', 'cliente']  
+        help_texts = {
+            'iban' : ("IBAN de la cuenta "),
+            'banco': ("Escriba su Banco favorito")
+        }        

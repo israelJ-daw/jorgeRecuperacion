@@ -39,3 +39,18 @@ class Tienda(models.Model):
   nombre = models.CharField(max_length=50) 
   direccion = models.CharField(max_length=100) 
   telefono = models.CharField(max_length=30)
+  
+class CuentaBancaria(models.Model):
+  iban = models.CharField(max_length=50)
+  banco = models.CharField(max_length=50)
+  MONEDA = [
+    ("EU" , "Euros"),
+    ("Dolar" , "Dolar"),
+    ("LIB" , "Libra")
+  ]
+  tipo = models.CharField(
+    max_length=5, choices=MONEDA,default="EU"
+  )
+  
+  cliente = models.OneToOneField(Cliente, on_delete=models.CASCADE)
+  

@@ -123,3 +123,45 @@ def tienda_editar(request, id_tienda):
         formulario = TiendaModelForms(instance=tienda)     
         
     return render (request, 'tienda/tienda_editar.html', {'formulario' : formulario, 'tienda' : tienda })   
+
+def coche_eliminar(request, id_coche):
+    coche = Coche.objects.get(id=id_coche)
+    
+    try:
+        coche.delete()
+        messages.success(request, "se ha eliminado el coche " + coche.nombre  +"correctamente")
+    except Exception as Error:
+        print(Error)
+    return redirect ('lista_coche')        
+
+def detalle_cliente(request, id_cliente):
+    cliente = Cliente.objects.get(id = id_cliente)
+    
+    return render (request, 'clientes/detalles_cliente.html', {'cliente': cliente} )
+
+def ver_cuenta(request, id_cliente):
+    cuenta = CuentaBancaria.objects.filter(cliente_id=id_cliente).first()
+    
+    return render (request, 'clientes/cuenta.html', {'cuenta' : cuenta} )
+def crear_tienda(request):
+    if request.method == 'POST':
+        formulario = TiendaModelForms(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect ("lista_tienda")
+    else:
+        formulario = TiendaModelForms()
+
+    return render (request, 'tienda/crear_tienda.html', {'formulario': formulario})
+
+def crear_cuenta(request):
+    if request.method == 'POST':
+        formulario = CuentaModelForms(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Se ha Creado Su cuenta')  
+            return redirect ("detalle_cliente", id_cliente=request.user.cliente.id)
+    else:
+        formulario = CuentaModelForms()
+
+    return render (request, 'clientes/crear_cuenta.html', {'formulario': formulario})

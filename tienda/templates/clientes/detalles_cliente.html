@@ -1,0 +1,16 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido%}
+{% if cliente %}   
+<ul>
+    <li>  Nombre de usuario: {{cliente.Usuario.username|capfirst}} </li>
+
+    <li> Email: {{cliente.Usuario.email|capfirst}} </li>
+ 
+    <a class = "btn btn-outline-primary" href= "{% url 'ver_cuenta' cliente.id %}">Ver Cuenta Bancaria</a>
+
+</ul>
+
+{% endif %}
+
+{% endblock %}

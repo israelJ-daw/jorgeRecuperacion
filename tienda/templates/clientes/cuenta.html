@@ -1,0 +1,22 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido%}
+{% if cuenta %}   
+<ul>
+    <li>  IBAN: {{cuenta.iban|capfirst}} </li>
+
+    <li> Banco: {{cuenta.banco|capfirst}} </li>
+    
+    <li> Moneda: {{cuenta.tipo|capfirst}} </li>
+
+</ul>
+{% else %}
+
+    <h1>No tienes Cuenta Bancaria</h1>
+
+    <a class = "btn btn-outline-primary" href= "{% url 'crear_cuenta' %}">Crear Cuenta Bancaria</a>
+
+
+{% endif %}
+
+{% endblock %}

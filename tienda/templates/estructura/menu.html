@@ -22,6 +22,8 @@
                     <li>
                         {% if request.user.rol == 2 %}
                             <a class="nav-link"> Rol: Cliente </a>
+                            <a class = "btn btn-outline-danger" href= "{% url 'detalle_cliente' request.user.cliente.id %}">Ver Perfil</a>
+
                         {% elif request.user.rol == 3 %}
                             <a class="nav-link"> Rol: Vendedor </a>
 
