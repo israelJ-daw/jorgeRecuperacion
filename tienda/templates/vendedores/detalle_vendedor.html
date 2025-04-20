@@ -1,0 +1,15 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido%}
+{% if vendedor %}   
+<ul>
+
+    {% include "vendedores/vendedor.html" %}
+
+    <a class = "btn btn-outline-primary" href= "{% url 'ver_datos' vendedor.id %}">Ver Datos Vendedor</a>
+
+</ul>
+
+{% endif %}
+
+{% endblock %}

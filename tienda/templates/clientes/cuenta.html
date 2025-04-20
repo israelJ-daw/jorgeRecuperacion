@@ -9,6 +9,11 @@
     
     <li> Moneda: {{cuenta.tipo|capfirst}} </li>
 
+    <a class = "btn btn-danger" href= "{% url 'eliminar_cuenta' cuenta.id%}">Eliminar Cuenta Bancaria</a>
+
+    <a class = "btn btn-outline-primary" href= "{% url 'cuenta_editar' cuenta.id %}">Editar Cuenta Bancaria</a>
+
+
 </ul>
 {% else %}
 

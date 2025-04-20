@@ -25,5 +25,14 @@ urlpatterns = [
     #cuenta
     path ('ver/cuenta/<int:id_cliente>', views.ver_cuenta, name = 'ver_cuenta'),
     path('crear/cuenta/', views.crear_cuenta, name='crear_cuenta'), 
+    path('eliminar/<int:id_cuenta>/cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'), 
+    path('editar/<int:id_cuenta>/cuenta', views.cuenta_editar, name='cuenta_editar'),
+    #vendedores
+    path('detalles/vendedor/<int:id_vendedor>', views.detalle_vendedor, name='detalle_vendedor'), 
+    path('ver/datos/<int:id_vendedor>', views.ver_datos, name='ver_datos'), 
+    path('crear/datos/', views.crear_datos, name='crear_datos'), 
+    path('eliminar/<int:id_vendedor>/datos/', views.eliminar_datos, name='eliminar_datos'), 
+    path('editar/<int:id_vendedor>/datos', views.datos_editar, name='datos_editar'),
+
 
 ] 

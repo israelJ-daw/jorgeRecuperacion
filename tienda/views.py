@@ -165,3 +165,77 @@ def crear_cuenta(request):
         formulario = CuentaModelForms()
 
     return render (request, 'clientes/crear_cuenta.html', {'formulario': formulario})
+
+def eliminar_cuenta(request, id_cuenta):
+    cuenta = CuentaBancaria.objects.get(id=id_cuenta)
+
+    try:
+        cuenta.delete()  
+        messages.success(request, "Se ha eliminado la cuenta bancaria correctamente.")
+    except Exception as error:
+        print(error)
+
+    return redirect('ver_cuenta', id_cliente=cuenta.cliente.id) 
+
+def cuenta_editar(request, id_cuenta):
+    cuenta = CuentaBancaria.objects.get(id = id_cuenta)
+    
+    if request.method == "POST": 
+        formulario = CuentaModelForms(request.POST, instance=cuenta)
+        if formulario.is_valid:
+            formulario.save()
+            messages.success(request, 'Se ha modificado perfectamente')            
+        return redirect('ver_cuenta', id_cliente=cuenta.cliente.id) 
+    else:
+        formulario = CuentaModelForms(instance=cuenta)     
+        
+    return render (request, 'clientes/cuenta_editar.html', {'formulario' : formulario, 'cuenta' : cuenta })   
+
+
+def detalle_vendedor(request, id_vendedor):
+    vendedor = Vendedor.objects.get(id = id_vendedor)
+    
+    return render (request, 'vendedores/detalle_vendedor.html', {'vendedor': vendedor} )
+
+
+def ver_datos(request, id_vendedor):
+    vendedor = DatosVendedor.objects.filter(vendedor_id=id_vendedor).first()
+    
+    return render (request, 'vendedores/datos_vendedor.html', {'vendedor' : vendedor} )
+
+def crear_datos(request):
+    if request.method == 'POST':
+        formulario = DatosModelForms(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Se han Creado sus Datos')  
+            return redirect ('detalle_vendedor', id_vendedor=request.user.vendedor.id)
+    else:
+        formulario = DatosModelForms()
+
+    return render (request, 'vendedores/crear_datos.html', {'formulario': formulario})
+
+def eliminar_datos (request, id_vendedor):
+    vendedor = DatosVendedor.objects.get(id=id_vendedor)
+
+    try:
+        vendedor.delete()  
+        messages.success(request, "Se han eliminado los datos Correctamente.")
+    except Exception as error:
+        print(error)
+
+    return redirect('ver_datos', id_vendedor=vendedor.vendedor.id) 
+
+def datos_editar(request, id_vendedor):
+    vendedor = DatosVendedor.objects.get(id = id_vendedor)
+    
+    if request.method == "POST": 
+        formulario = DatosModelForms(request.POST, instance=vendedor)
+        if formulario.is_valid:
+            formulario.save()
+            messages.success(request, 'Se ha modificado perfectamente')            
+        return redirect('ver_datos', id_vendedor=vendedor.vendedor.id) 
+    else:
+        formulario = DatosModelForms(instance=vendedor)     
+        
+    return render (request, 'vendedores/datos_editar.html', {'formulario' : formulario, 'vendedor' : vendedor })   

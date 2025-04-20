@@ -1,0 +1,25 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido%}
+{% if vendedor %}   
+<ul>
+    <li> Direccion: {{vendedor.direccion|capfirst}} </li>
+
+    <li> Facturacion: {{vendedor.facturacion}} </li>
+
+    <a class = "btn btn-danger" href= "{% url 'eliminar_datos' vendedor.id%}">Eliminar Datos </a>
+
+    <a class = "btn btn-outline-primary" href= "{% url 'datos_editar' vendedor.id %}">Editar Datos</a>
+
+
+</ul>
+{% else %}
+
+    <h1>No tienes Datos De Venta</h1>
+
+    <a class = "btn btn-outline-primary" href= "{% url 'crear_datos'%}">Crear Datos</a>
+
+    
+{% endif %}
+
+{% endblock %}

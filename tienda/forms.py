@@ -87,3 +87,12 @@ class CuentaModelForms(ModelForm):
             'iban' : ("IBAN de la cuenta "),
             'banco': ("Escriba su Banco favorito")
         }        
+
+class DatosModelForms(ModelForm):
+    class Meta:
+        model = DatosVendedor 
+        fields = ['direccion', 'facturacion', 'vendedor']  
+        help_texts = {
+            'direccion' : ("Direccion del vendedor"),
+            'facturacion': ("Escriba su Facturacion")
+        }        
