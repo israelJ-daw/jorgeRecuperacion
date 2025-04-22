@@ -4,6 +4,7 @@ from .forms import *
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
+from django.http import Http404
 
 from .models import *
 # Create your views here.
@@ -82,7 +83,7 @@ def crear_tienda(request):
     
 
 def lista_tienda(request):
-    tiendas = Tienda.objects.all() 
+    tiendas = Tienda.objects.filter(vendedor=request.user.vendedor).all() 
     return render(request, 'tienda/lista_tienda.html', {'tiendas': tiendas})
 
 
@@ -134,20 +135,31 @@ def coche_eliminar(request, id_coche):
         print(Error)
     return redirect ('lista_coche')        
 
+@permission_required('tienda.view_cliente')
 def detalle_cliente(request, id_cliente):
-    cliente = Cliente.objects.get(id = id_cliente)
-    
-    return render (request, 'clientes/detalles_cliente.html', {'cliente': cliente} )
+    if request.user.cliente.id == id_cliente:
+        cliente = Cliente.objects.get(id = id_cliente)
+        return render (request, 'clientes/detalles_cliente.html', {'cliente': cliente} )
+    else:
+        raise Http404()
+ 
 
 def ver_cuenta(request, id_cliente):
     cuenta = CuentaBancaria.objects.filter(cliente_id=id_cliente).first()
     
     return render (request, 'clientes/cuenta.html', {'cuenta' : cuenta} )
+
 def crear_tienda(request):
     if request.method == 'POST':
         formulario = TiendaModelForms(request.POST)
         if formulario.is_valid():
-            formulario.save()
+            tienda = Tienda.objects.create(
+                nombre = formulario.cleaned_data.get("nombre"),
+                direccion = formulario.cleaned_data.get("direccion"),
+                telefono = formulario.cleaned_data.get("telefono"),
+                vendedor = request.user.vendedor,
+            )   
+            tienda.save()
             return redirect ("lista_tienda")
     else:
         formulario = TiendaModelForms()
@@ -158,7 +170,13 @@ def crear_cuenta(request):
     if request.method == 'POST':
         formulario = CuentaModelForms(request.POST)
         if formulario.is_valid():
-            formulario.save()
+            cuenta = CuentaBancaria.objects.create(
+                iban = formulario.cleaned_data.get("iban"),
+                banco = formulario.cleaned_data.get("banco"),
+                tipo = formulario.cleaned_data.get("tipo"),
+                cliente = request.user.cliente,  
+            )
+            cuenta.save()
             messages.success(request, 'Se ha Creado Su cuenta')  
             return redirect ("detalle_cliente", id_cliente=request.user.cliente.id)
     else:
@@ -239,3 +257,24 @@ def datos_editar(request, id_vendedor):
         formulario = DatosModelForms(instance=vendedor)     
         
     return render (request, 'vendedores/datos_editar.html', {'formulario' : formulario, 'vendedor' : vendedor })   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Paginas de error 
+def mi_error_404(request, exception=None):
+    return render (request, 'errores/404.html',None, None,404)
+
+def mi_error_500(request, exception=None):
+    return render (request, 'errores/500.html',None, None,500)

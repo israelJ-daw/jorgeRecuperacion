@@ -39,6 +39,9 @@ class Tienda(models.Model):
   nombre = models.CharField(max_length=50) 
   direccion = models.CharField(max_length=100) 
   telefono = models.CharField(max_length=30)
+  vendedor = models.ForeignKey(Vendedor, on_delete=models.CASCADE, default=None, null=True)  
+  
+  
   
 class CuentaBancaria(models.Model):
   iban = models.CharField(max_length=50)

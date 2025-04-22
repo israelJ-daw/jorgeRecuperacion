@@ -82,7 +82,7 @@ class TiendaModelForms(ModelForm):
 class CuentaModelForms(ModelForm):
     class Meta:
         model = CuentaBancaria 
-        fields = ['iban', 'banco', 'tipo', 'cliente']  
+        fields = ['iban', 'banco', 'tipo']  
         help_texts = {
             'iban' : ("IBAN de la cuenta "),
             'banco': ("Escriba su Banco favorito")

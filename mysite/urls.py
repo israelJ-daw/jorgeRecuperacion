@@ -8,3 +8,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('',include('tienda.urls')),
 ]
+
+from django.conf.urls import handler404, handler500
+handler404 = "tienda.views.mi_error_404"
+handler500 = "tienda.views.mi_error_500"
