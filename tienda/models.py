@@ -33,7 +33,9 @@ class Coche(models.Model):
   nombre = models.CharField(max_length=50)
   anyo = models.DateField(auto_now=False, auto_now_add=False)
   precio = models.FloatField()
-
+    
+  def __str__(self):
+    return self.nombre
 
 class Tienda(models.Model):
   nombre = models.CharField(max_length=50) 
@@ -41,6 +43,10 @@ class Tienda(models.Model):
   telefono = models.CharField(max_length=30)
   vendedor = models.ForeignKey(Vendedor, on_delete=models.CASCADE, default=None, null=True)  
   
+  productos = models.ManyToManyField(Coche, through="Inventario")
+  
+  def __str__(self):
+    return self.nombre
   
   
 class CuentaBancaria(models.Model):
@@ -62,3 +68,15 @@ class DatosVendedor(models.Model):
   facturacion = models.CharField(max_length=50)
 
   vendedor = models.OneToOneField(Vendedor, on_delete=models.CASCADE)
+  
+  
+class Inventario(models.Model):
+  tienda = models.ForeignKey(Tienda, on_delete=models.CASCADE)
+  coches = models.ForeignKey(Coche, on_delete=models.CASCADE)
+  cantidad = models.IntegerField(default=0)
+  
+ 
+ 
+ 
+  
+  

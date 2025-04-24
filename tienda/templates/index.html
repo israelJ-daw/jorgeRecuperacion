@@ -49,4 +49,10 @@
     </div>
     {% endif%}
 
+    {% if perms.tienda.add_inventario %}
+    <div class="text-center mt-5" >
+        <h2>Añadir Productos</h2> 
+        <a href="{% url  'crear_inventario' %}" class="btn btn-primary"> Añadir Productos</a>
+    </div>
+{% endif %}
 {% endblock %}

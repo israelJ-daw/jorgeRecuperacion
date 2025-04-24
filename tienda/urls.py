@@ -20,6 +20,8 @@ urlpatterns = [
     path('tiendas/', views.lista_tienda,name= 'lista_tienda'),
     path('tienda/<int:id_tienda>', views.tienda_detalle, name='tienda_detalle'),
     path('tienda/<int:id_tienda>/editar', views.tienda_editar, name='tienda_editar'),
+    path('crear/inventario/', views.crear_inventario, name='crear_inventario'), 
+
     #Cliente
     path('detalle/cliente/<int:id_cliente>', views.detalle_cliente,name= 'detalle_cliente'),
     #cuenta

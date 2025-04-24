@@ -259,9 +259,23 @@ def datos_editar(request, id_vendedor):
     return render (request, 'vendedores/datos_editar.html', {'formulario' : formulario, 'vendedor' : vendedor })   
 
 
-
-
-
+permission_required("tienda.add_inventario")
+def crear_inventario(request):
+    
+    if request.method == 'POST':
+        formulario = CrearInventarioForms(request.POST, request=request)
+        if formulario.is_valid():
+            inventario = Inventario.objects.filter(tienda = formulario.cleaned_data.get("tienda"), coches = formulario.cleaned_data.get("coches")).first()
+            if (inventario is None):
+                formulario.save()
+            else: 
+                inventario.cantidad += formulario.cleaned_data.get("cantidad")
+                inventario.save()     
+            messages.success(request, 'Se ha añadido Correctamente')
+            return redirect ("lista_tienda")
+    else:
+        formulario = CrearInventarioForms(None, request=request)
+    return render (request, 'inventario/crear_inventario.html', {'formulario': formulario})
 
 
 

@@ -96,3 +96,26 @@ class DatosModelForms(ModelForm):
             'direccion' : ("Direccion del vendedor"),
             'facturacion': ("Escriba su Facturacion")
         }        
+        
+        
+        
+        
+class CrearInventarioForms(ModelForm):
+    class Meta:
+        model = Inventario
+        fields = ['tienda' , 'coches', 'cantidad']
+        help_texts = {
+            'tienda' : ("indica la tienda que es"),
+            'cantidad' : ("Cantidad de coches")
+        }
+        
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(CrearInventarioForms, self).__init__ (*args, **kwargs)
+        tiendasDisponibles = Tienda.objects.filter(vendedor = self.request.user.vendedor).all()
+        self.fields["tienda"] = forms.ModelChoiceField(
+            queryset=tiendasDisponibles,
+            widget=forms.Select,
+            required=True,
+            empty_label="Ninguna"
+        )
