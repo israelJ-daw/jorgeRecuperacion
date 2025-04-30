@@ -6,6 +6,8 @@
 
             <a class = "btn btn-outline-primary" href= "{% url 'tienda_detalle' tienda.id %}">Mas Informacion</a>
 
+            <a class="btn btn-outline-primary "href="{% url 'lista_productos' tienda.id %}">Ver Productos</a>
+
         {% empty %}
             <p>No existen tiendas.</p>
         {% endfor %}

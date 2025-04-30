@@ -12,6 +12,11 @@ class Usuario(AbstractUser):
     )
     rol = models.PositiveSmallIntegerField(choices=ROLES, default=CLIENTE)
 
+    coches = models.ManyToManyField('Coche', through='Pedidos')
+
+
+
+
 class Cliente(models.Model):
   
   Usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
@@ -74,9 +79,12 @@ class Inventario(models.Model):
   tienda = models.ForeignKey(Tienda, on_delete=models.CASCADE)
   coches = models.ForeignKey(Coche, on_delete=models.CASCADE)
   cantidad = models.IntegerField(default=0)
-  
- 
- 
- 
-  
-  
+
+
+class Pedidos(models.Model):
+  clientes = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+  coches = models.ForeignKey(Coche, on_delete=models.CASCADE)
+
+  fecha_pedido = models.DateTimeField(auto_now_add=True)
+  cantidad = models.PositiveIntegerField(default=1)
+  direccion_envio = models.CharField(max_length=255)

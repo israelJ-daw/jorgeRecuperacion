@@ -211,9 +211,12 @@ def cuenta_editar(request, id_cuenta):
 
 
 def detalle_vendedor(request, id_vendedor):
-    vendedor = Vendedor.objects.get(id = id_vendedor)
-    
-    return render (request, 'vendedores/detalle_vendedor.html', {'vendedor': vendedor} )
+ 
+    if request.user.vendedor.id == id_vendedor:
+        vendedor = Vendedor.objects.get(id = id_vendedor)
+        return render (request, 'vendedores/detalle_vendedor.html', {'vendedor': vendedor} )
+    else:
+        raise Http404()
 
 
 def ver_datos(request, id_vendedor):
@@ -225,9 +228,14 @@ def crear_datos(request):
     if request.method == 'POST':
         formulario = DatosModelForms(request.POST)
         if formulario.is_valid():
-            formulario.save()
-            messages.success(request, 'Se han Creado sus Datos')  
-            return redirect ('detalle_vendedor', id_vendedor=request.user.vendedor.id)
+            datos = DatosVendedor.objects.create(
+                direccion = formulario.cleaned_data.get("direccion"),
+                facturacion = formulario.cleaned_data.get("facturacion"),
+                vendedor = request.user.vendedor,  
+            )
+            datos.save()
+            messages.success(request, 'Se ha Creado Sus Datos')  
+            return redirect ("detalle_vendedor", id_vendedor=request.user.vendedor.id)
     else:
         formulario = DatosModelForms()
 
@@ -279,7 +287,38 @@ def crear_inventario(request):
 
 
 
+def lista_productos(request, tienda_id):
+    productos = Inventario.objects.filter(tienda_id=tienda_id)
 
+    return render(request, 'inventario/lista_productos.html', {'productos': productos})
+
+
+def productos_editar(request, id_producto):
+    productos = Inventario.objects.get(id=id_producto)
+    
+    if request.method == "POST": 
+        formulario = CrearInventarioForms(request.POST, request=request, instance=productos)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Se ha modificado correctamente.')
+            return redirect('lista_productos', tienda_id=productos.tienda.id)
+    else:
+        formulario = CrearInventarioForms(request=request, instance=productos)
+        
+    return render(request, 'inventario/productos_editar.html', {'formulario': formulario, 'productos': productos})
+
+    
+
+def eliminar_productos (request, id_productos):
+    productos = Inventario.objects.get(id=id_productos)
+
+    try:
+        productos.delete()  
+        messages.success(request, "Se han eliminado El producto Correctamente.")
+    except Exception as error:
+        print(error)
+
+    return redirect('lista_productos', tienda_id=productos.tienda.id) 
 
 
 

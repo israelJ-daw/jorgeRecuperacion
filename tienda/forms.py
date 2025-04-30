@@ -91,7 +91,7 @@ class CuentaModelForms(ModelForm):
 class DatosModelForms(ModelForm):
     class Meta:
         model = DatosVendedor 
-        fields = ['direccion', 'facturacion', 'vendedor']  
+        fields = ['direccion', 'facturacion']  
         help_texts = {
             'direccion' : ("Direccion del vendedor"),
             'facturacion': ("Escriba su Facturacion")

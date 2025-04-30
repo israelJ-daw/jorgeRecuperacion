@@ -35,6 +35,9 @@ urlpatterns = [
     path('crear/datos/', views.crear_datos, name='crear_datos'), 
     path('eliminar/<int:id_vendedor>/datos/', views.eliminar_datos, name='eliminar_datos'), 
     path('editar/<int:id_vendedor>/datos', views.datos_editar, name='datos_editar'),
-
+    #Inventario
+    path('tienda/<int:tienda_id>/productos/', views.lista_productos, name='lista_productos'),
+    path('editar/<int:id_producto>/producto', views.productos_editar, name='productos_editar'),
+    path('eliminar/<int:id_productos>/productos/', views.eliminar_productos, name='eliminar_productos'), 
 
 ] 
