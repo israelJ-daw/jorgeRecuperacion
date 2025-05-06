@@ -119,3 +119,7 @@ class CrearInventarioForms(ModelForm):
             required=True,
             empty_label="Ninguna"
         )
+
+
+class BusquedaInventario(forms.Form):
+    nombre = forms.CharField(required=False)

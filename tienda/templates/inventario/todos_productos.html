@@ -1,0 +1,42 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+
+<form action = "{% url "ver_productos" %}" method = "get">
+
+    {% load django_bootstrap5 %}
+    {% csrf_token %}
+    {% bootstrap_form formulario %}
+
+    {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
+</form>
+
+    <div class="container my-5">
+        <h2 class="mb-4 text-center">Listado de Productos</h2>
+
+        {% if productos %}
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Coche</th>
+                            <th scope="col">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                            <tr>
+                                <td>{{ producto.coches }}</td>
+                                <td>{{ producto.cantidad }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                No hay productos disponibles en este momento.
+            </div>
+        {% endif %}
+    </div>
+{% endblock contenido %}

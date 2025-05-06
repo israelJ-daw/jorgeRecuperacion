@@ -54,5 +54,12 @@
         <h2>Añadir Productos</h2> 
         <a href="{% url  'crear_inventario' %}" class="btn btn-primary"> Añadir Productos</a>
     </div>
+
+    {% if user.rol == 3 %}
+    <div class="text-center mt-5" >
+       <h2> Ver Productos</h2> 
+        <a href="{% url 'ver_productos' %}" class="btn btn-primary"> 👀 Todos Los Productos</a>
+    </div>
+    {% endif%}
 {% endif %}
 {% endblock %}

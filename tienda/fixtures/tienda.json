@@ -1,0 +1,133 @@
+[
+{
+    "model": "tienda.usuario",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$yoc9bUFuYu91jw3TFjA4qC$06XqvL6Jr1RAOtBiZhBLZm3Es+Kuk/Kic1YeRwHIR/c=",
+        "last_login": "2025-05-06T09:51:13.719",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-05-06T09:45:42.675",
+        "rol": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "tienda.usuario",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$xX1tqSURXl0qyHlNXNp7Kt$3Hf/H2ExrlIAiDAynOYUZuez9a+z7wKhcXvhaAoAzX8=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "vendedor1",
+        "first_name": "",
+        "last_name": "",
+        "email": "vendedor1@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-05-06T09:48:46.488",
+        "rol": 3,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "tienda.usuario",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$qiTfSaRXgHrnKV1Nm6tcTJ$NF69lOBSae60IZ2gvgZVLKx3Sn78KyC0+KgPmeuUghw=",
+        "last_login": "2025-05-06T09:54:47.602",
+        "is_superuser": false,
+        "username": "vendedor2",
+        "first_name": "",
+        "last_name": "",
+        "email": "vendedor2@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-05-06T09:50:01.856",
+        "rol": 3,
+        "groups": [
+            2
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "tienda.vendedor",
+    "pk": 1,
+    "fields": {
+        "Usuario": 3
+    }
+},
+{
+    "model": "tienda.coche",
+    "pk": 1,
+    "fields": {
+        "nombre": "renault clio",
+        "anyo": "2005-02-13",
+        "precio": 4000.0
+    }
+},
+{
+    "model": "tienda.coche",
+    "pk": 2,
+    "fields": {
+        "nombre": "Seat leon mk2",
+        "anyo": "2006-11-22",
+        "precio": 500.0
+    }
+},
+{
+    "model": "tienda.coche",
+    "pk": 3,
+    "fields": {
+        "nombre": "Seat leon mk1",
+        "anyo": "2005-03-02",
+        "precio": 2442.0
+    }
+},
+{
+    "model": "tienda.tienda",
+    "pk": 1,
+    "fields": {
+        "nombre": "tienda coches1",
+        "direccion": "sevilla, capital",
+        "telefono": "213213213",
+        "vendedor": 1
+    }
+},
+{
+    "model": "tienda.tienda",
+    "pk": 2,
+    "fields": {
+        "nombre": "tienda coches2",
+        "direccion": "2312321321",
+        "telefono": "213213213213",
+        "vendedor": 1
+    }
+},
+{
+    "model": "tienda.inventario",
+    "pk": 1,
+    "fields": {
+        "tienda": 1,
+        "coches": 1,
+        "cantidad": 54
+    }
+},
+{
+    "model": "tienda.inventario",
+    "pk": 2,
+    "fields": {
+        "tienda": 2,
+        "coches": 2,
+        "cantidad": 23
+    }
+}
+]

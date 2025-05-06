@@ -321,6 +321,22 @@ def eliminar_productos (request, id_productos):
     return redirect('lista_productos', tienda_id=productos.tienda.id) 
 
 
+def ver_productos (request):
+    if (len(request.GET)> 0):
+        formulario = BusquedaInventario(request.GET)
+        if formulario.is_valid():
+            nombre = formulario.cleaned_data.get("nombre")
+            productos = Inventario.objects.filter(coches__nombre__icontains=nombre)
+    else: 
+        productos = Inventario.objects.all()
+        formulario = BusquedaInventario()
+
+    
+    return render(request, 'inventario/todos_productos.html', {'productos': productos, 'formulario' : formulario})
+
+
+
+
 
 
 
