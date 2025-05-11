@@ -335,10 +335,40 @@ def ver_productos (request):
     return render(request, 'inventario/todos_productos.html', {'productos': productos, 'formulario' : formulario})
 
 
+def crear_pedidos (request):
+
+    if request.method == 'POST':
+        formulario = CrearPedidoForms (request.POST)
+        if formulario.is_valid():
+            pedidos = Pedidos.objects.create(
+                coche = formulario.cleaned_data.get("coche"),
+                fecha_pedido = formulario.cleaned_data.get("fecha_pedido"),
+                cantidad = formulario.cleaned_data.get("cantidad"),
+                direccion = formulario.cleaned_data.get("direccion"),
+                cliente = request.user.cliente,  
+            )
+            pedidos.save()
+            messages.success(request, 'Se ha Creado Su Pedido')  
+            return redirect ("index")
+    else:
+        formulario = CrearPedidoForms()
+
+    return render (request, 'clientes/crear_pedidos.html', {'formulario': formulario})
 
 
+def buscarProductos(request):
+    
+    if (len(request.GET)> 0):
+        formulario = BusquedaInventario(request.GET)
+        if formulario.is_valid():
+            nombre = formulario.cleaned_data.get("nombre")
+            productos = Inventario.objects.filter(coches__nombre__icontains=nombre)
+    else: 
+        productos = Inventario.objects.all()
+        formulario = BusquedaInventario()
 
-
+    
+    return render(request, 'inventario/todos_productos.html', {'productos': productos, 'formulario' : formulario})
 
 
 #Paginas de error 

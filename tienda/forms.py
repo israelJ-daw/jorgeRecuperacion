@@ -123,3 +123,15 @@ class CrearInventarioForms(ModelForm):
 
 class BusquedaInventario(forms.Form):
     nombre = forms.CharField(required=False)
+
+class CrearPedidoForms(forms.ModelForm):
+    class Meta:
+        model = Pedidos
+        fields = ['coche', 'cantidad', 'direccion']
+        help_texts = {
+            'coche': "Elija el Coche que desea",
+        }
+        widgets = {
+            'fecha_pedido': forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
+        }
+
