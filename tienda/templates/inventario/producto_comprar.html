@@ -1,0 +1,44 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">Coche</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Tienda</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Acciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.coches }}</td>
+                    <td>{{ producto.cantidad }}</td>
+                    <td>{{ producto.tienda.nombre }}</td>
+                    <td>{{ producto.precio }}</td>
+
+                    <td>
+                        <form action = "{% url "producto_comprar" producto.id %}" method = "post">
+
+                            {% load django_bootstrap5 %}
+                            {% csrf_token %}
+                            {% bootstrap_form formulario %}
+                        
+                            {% bootstrap_button "Comprar" button_type="submit" button_class="btn-primary" %}
+
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+{% endblock contenido  %}

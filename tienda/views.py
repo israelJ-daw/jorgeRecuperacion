@@ -371,6 +371,41 @@ def buscarProductos(request):
     return render(request, 'inventario/todos_productos.html', {'productos': productos, 'formulario' : formulario})
 
 
+
+def lista_pedidos (request, id_cliente):
+    pedidos = Pedidos.objects.filter(cliente_id = id_cliente)
+
+    return render(request, 'inventario/listar_pedidos.html', {'pedidos': pedidos })
+
+
+def producto_comprar (request, id_inventario):
+    productos = Inventario.objects.filter (id = id_inventario)
+    
+    if request.method == 'POST':
+        formulario = cantidadComprar(request.POST)
+        if formulario.is_valid():
+            cantidad = formulario.cleaned_data.get("cantidad")
+            productos.cantidad -= cantidad
+            productos.save()
+            pedidos = Pedidos.objects.create(
+                coche = formulario.cleaned_data.get("coche"),
+                fecha_pedido = formulario.cleaned_data.get("fecha_pedido"),
+                cantidad = formulario.cleaned_data.get("cantidad"),
+                direccion = formulario.cleaned_data.get("direccion"),
+                cliente = request.user.cliente,  
+            )
+            
+            pedidos.save()
+            messages.success(request, 'Se ha realizado su compra')  
+            return redirect('index')
+        
+    else:
+        formulario = cantidadComprar()
+    
+    return render(request, 'inventario/producto_comprar.html', {'productos': productos, 'formulario': formulario})
+
+
+
 #Paginas de error 
 def mi_error_404(request, exception=None):
     return render (request, 'errores/404.html',None, None,404)

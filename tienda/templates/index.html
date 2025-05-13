@@ -77,4 +77,12 @@
         <a href="{% url  'ver_productos' %}" class="btn btn-primary"> 👀 Buscar Productos</a>
     </div>
     {% endif%}
+
+    {% if user.rol == 2  %}
+    <div class="text-center mt-5" >
+        <h2>Listar Pedidos </h2> 
+        <a href="{% url  'lista_pedidos'  request.user.cliente.id %}" class="btn btn-primary"> Listar Pedidos</a>
+    </div>
+    {% endif%}
+
 {% endblock %}

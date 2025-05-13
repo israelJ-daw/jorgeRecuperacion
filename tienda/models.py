@@ -78,7 +78,7 @@ class Inventario(models.Model):
   tienda = models.ForeignKey(Tienda, on_delete=models.CASCADE)
   coches = models.ForeignKey(Coche, on_delete=models.CASCADE)
   cantidad = models.IntegerField(default=0)
-
+  precio = models.IntegerField(null = True)
 
 class Pedidos(models.Model):
   cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)

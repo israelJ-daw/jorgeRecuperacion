@@ -1,0 +1,30 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+  <h1>Lista de Pedidos</h1>
+
+  {% if pedidos %}
+    <table border="1" cellspacing="0" cellpadding="8">
+      <thead>
+        <tr>
+          <th>Coche</th>
+          <th>Fecha del Pedido</th>
+          <th>Cantidad</th>
+          <th>Dirección</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pedido in pedidos %}
+          <tr>
+            <td>{{ pedido.coche.nombre }}</td>
+            <td>{{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
+            <td>{{ pedido.cantidad }}</td>
+            <td>{{ pedido.direccion }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No hay pedidos disponibles para este cliente.</p>
+  {% endif %}
+{% endblock contenido %}

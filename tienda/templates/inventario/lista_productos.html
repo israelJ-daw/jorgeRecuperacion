@@ -11,7 +11,10 @@
                     <tr>
                         <th scope="col">Coche</th>
                         <th scope="col">Cantidad</th>
+                        <th scope="col">Tienda</th>
+                        <th scope="col">Precio</th>
                         <th scope="col">Acciones</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -19,6 +22,9 @@
                         <tr>
                             <td>{{ producto.coches }}</td>
                             <td>{{ producto.cantidad }}</td>
+                            <td>{{ producto.tienda.nombre }}</td>
+                            <td>{{ producto.precio }}</td>
+
                             <td>
                                 <a class="btn btn-outline-primary" href="{% url 'productos_editar' producto.id %}">Editar</a>
                                 <a class="btn btn-outline-danger" href="{% url 'eliminar_productos' producto.id %}">Eliminar</a>

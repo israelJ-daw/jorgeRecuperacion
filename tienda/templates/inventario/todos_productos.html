@@ -1,14 +1,6 @@
 {% extends "estructura/principal.html" %}
 
 {% block contenido %}
-
-<form action="{% url "ver_productos" %}" method="get">
-    {% load django_bootstrap5 %}
-    {% csrf_token %}
-    {% bootstrap_form formulario %}
-    {% bootstrap_button "Enviar" button_type="submit" button_class="btn-primary" %}
-</form>
-
 <div class="container my-5">
     <h2 class="mb-4 text-center">Listado de Productos</h2>
 
@@ -20,6 +12,10 @@
                         <th scope="col">Coche</th>
                         <th scope="col">Cantidad</th>
                         <th scope="col">Tienda</th>
+                        <th scope="col">Precio</th>
+
+                        <th scope="col">Acciones</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +24,19 @@
                             <td>{{ producto.coches }}</td>
                             <td>{{ producto.cantidad }}</td>
                             <td>{{ producto.tienda.nombre }}</td>
+                            <td>{{ producto.precio}}</td>
+                            {% if request.user.rol == 3 %}
+                                <td>
+                                    <a class="btn btn-outline-primary" href="{% url 'productos_editar' producto.id %}">Editar</a>
+                                    <a class="btn btn-outline-danger" href="{% url 'eliminar_productos' producto.id %}">Eliminar</a>
+
+                                </td>
+                            {% endif %}    
+                            <td>
+                                <a class="btn btn-outline-primary" href="{% url 'producto_comprar' producto.id %}">Comprar</a>
+
+                            </td>
+
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -39,5 +48,4 @@
         </div>
     {% endif %}
 </div>
-
 {% endblock contenido %}

@@ -103,7 +103,7 @@ class DatosModelForms(ModelForm):
 class CrearInventarioForms(ModelForm):
     class Meta:
         model = Inventario
-        fields = ['tienda' , 'coches', 'cantidad']
+        fields = ['tienda' , 'coches', 'cantidad' , 'precio']
         help_texts = {
             'tienda' : ("indica la tienda que es"),
             'cantidad' : ("Cantidad de coches")
@@ -135,3 +135,7 @@ class CrearPedidoForms(forms.ModelForm):
             'fecha_pedido': forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"})
         }
 
+
+class cantidadComprar(forms.Form):
+    cantidad = forms.IntegerField (required=True)
+    
