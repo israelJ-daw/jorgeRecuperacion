@@ -379,19 +379,21 @@ def lista_pedidos (request, id_cliente):
 
 
 def producto_comprar (request, id_inventario):
-    productos = Inventario.objects.filter (id = id_inventario)
+    productos = Inventario.objects.get(id = id_inventario)
     
     if request.method == 'POST':
         formulario = cantidadComprar(request.POST)
         if formulario.is_valid():
             cantidad = formulario.cleaned_data.get("cantidad")
+            direccion = formulario.cleaned_data.get("direccion")
             productos.cantidad -= cantidad
             productos.save()
             pedidos = Pedidos.objects.create(
-                coche = formulario.cleaned_data.get("coche"),
-                fecha_pedido = formulario.cleaned_data.get("fecha_pedido"),
-                cantidad = formulario.cleaned_data.get("cantidad"),
-                direccion = formulario.cleaned_data.get("direccion"),
+                coche = productos.coches,
+                cantidad = cantidad,
+                direccion = direccion,
+                precio = productos.precio,
+                tienda = productos.tienda,
                 cliente = request.user.cliente,  
             )
             

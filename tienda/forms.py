@@ -138,4 +138,4 @@ class CrearPedidoForms(forms.ModelForm):
 
 class cantidadComprar(forms.Form):
     cantidad = forms.IntegerField (required=True)
-    
+    direccion = forms.CharField(max_length = 100)

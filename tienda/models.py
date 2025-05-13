@@ -87,3 +87,6 @@ class Pedidos(models.Model):
   fecha_pedido = models.DateTimeField(auto_now_add=True)
   cantidad = models.PositiveIntegerField(default=1)
   direccion = models.CharField(max_length=255)
+
+  precio = models.FloatField(null=True, blank=True)
+  tienda = models.ForeignKey(Tienda, on_delete=models.CASCADE, null=True, blank=True)
