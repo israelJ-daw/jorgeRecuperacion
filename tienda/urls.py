@@ -43,7 +43,7 @@ urlpatterns = [
     #pedidos
     path('crear/pedidos/', views.crear_pedidos, name='crear_pedidos'), 
     path('ver/pedidos/<int:id_cliente>', views.lista_pedidos, name='lista_pedidos'), 
-    path('comprar/producto/<int:id_inventario>', views.producto_comprar, name='producto_comprar'), 
+    path('comprar/producto/<int:id_inventario>', views.producto_comprar_nueva, name='producto_comprar'), 
 
 
 ] 

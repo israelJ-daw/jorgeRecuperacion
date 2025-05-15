@@ -15,15 +15,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for producto in productos %}
+            
                 <tr>
-                    <td>{{ producto.coches }}</td>
-                    <td>{{ producto.cantidad }}</td>
-                    <td>{{ producto.tienda.nombre }}</td>
-                    <td>{{ producto.precio }}</td>
+                    <td>{{ productos.coches }}</td>
+                    <td>{{ productos.cantidad }}</td>
+                    <td>{{ productos.tienda.nombre }}</td>
+                    <td>{{ productos.precio }}</td>
 
                     <td>
-                        <form action = "{% url "producto_comprar" producto.id %}" method = "post">
+                        <form action = "{% url "producto_comprar" productos.id %}" method = "post">
 
                             {% load django_bootstrap5 %}
                             {% csrf_token %}
@@ -34,7 +34,6 @@
                         </form>
                     </td>
                 </tr>
-            {% endfor %}
         </tbody>
     </table>
 </div>

@@ -126,8 +126,8 @@ class BusquedaInventario(forms.Form):
 
 class CrearPedidoForms(forms.ModelForm):
     class Meta:
-        model = Pedidos
-        fields = ['coche', 'cantidad', 'direccion']
+        model = LineaPedidos
+        fields = ['cantidad']
         help_texts = {
             'coche': "Elija el Coche que desea",
         }
@@ -138,4 +138,19 @@ class CrearPedidoForms(forms.ModelForm):
 
 class cantidadComprar(forms.Form):
     cantidad = forms.IntegerField (required=True)
-    direccion = forms.CharField(max_length = 100)
+    
+    def clean(self):
+        super().clean()
+    
+        cantidad = self.cleaned_data.get('cantidad')
+    
+    
+        if cantidad  > self.inventario.cantidad:
+            self.add_error('cantidad' , 'La cantidad debe ser menor que ' + str(self.inventario.cantidad))
+            
+        return self.cleaned_data  
+
+    def __init__ (self, *args, **kwargs):
+        self.inventario = kwargs.pop("inventario")
+        super(cantidadComprar, self).__init__(*args, **kwargs)
+

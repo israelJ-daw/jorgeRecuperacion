@@ -82,11 +82,19 @@ class Inventario(models.Model):
 
 class Pedidos(models.Model):
   cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-  coche = models.ForeignKey(Coche, on_delete=models.CASCADE)
-
-  fecha_pedido = models.DateTimeField(auto_now_add=True)
-  cantidad = models.PositiveIntegerField(default=1)
   direccion = models.CharField(max_length=255)
-
-  precio = models.FloatField(null=True, blank=True)
-  tienda = models.ForeignKey(Tienda, on_delete=models.CASCADE, null=True, blank=True)
+  estados = [
+    ("comp" , "completado"),
+    ("pen" , "pendiente"),
+    ("anu" , "anulado")
+  ]
+  estado = models.CharField(
+    max_length=30, choices=estados,default="pen"
+  )
+class LineaPedidos(models.Model): 
+  
+  pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
+  coche = models.ForeignKey(Coche, on_delete=models.CASCADE)
+  tienda = models.ForeignKey(Tienda, on_delete=models.CASCADE)
+  precio = models.IntegerField()
+  cantidad = models.IntegerField()

@@ -69,19 +69,7 @@ def crear_coche(request):
         formulario = cocheModelForms()
     return render (request, 'coches/crear_coche.html', {'formulario': formulario})
 
-
-def crear_tienda(request):
-    if request.method == 'POST':
-        formulario = TiendaModelForms(request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            return redirect ("lista_tienda")
-    else:
-        formulario = TiendaModelForms()
-
-    return render (request, 'tienda/crear_tienda.html', {'formulario': formulario})
     
-
 def lista_tienda(request):
     tiendas = Tienda.objects.filter(vendedor=request.user.vendedor).all() 
     return render(request, 'tienda/lista_tienda.html', {'tiendas': tiendas})
@@ -378,11 +366,11 @@ def lista_pedidos (request, id_cliente):
     return render(request, 'inventario/listar_pedidos.html', {'pedidos': pedidos })
 
 
-def producto_comprar (request, id_inventario):
+def producto_comprar_antigua(request, id_inventario):
     productos = Inventario.objects.get(id = id_inventario)
     
     if request.method == 'POST':
-        formulario = cantidadComprar(request.POST)
+        formulario = cantidadComprar(request.POST, inventario = productos)
         if formulario.is_valid():
             cantidad = formulario.cleaned_data.get("cantidad")
             direccion = formulario.cleaned_data.get("direccion")
@@ -402,7 +390,46 @@ def producto_comprar (request, id_inventario):
             return redirect('index')
         
     else:
-        formulario = cantidadComprar()
+        formulario = cantidadComprar(inventario = productos)
+    
+    return render(request, 'inventario/producto_comprar.html', {'productos': productos, 'formulario': formulario})
+
+
+
+def producto_comprar_nueva(request, id_inventario):
+    productos = Inventario.objects.get(id = id_inventario)
+    
+    if request.method == 'POST':
+        formulario = cantidadComprar(request.POST, inventario = productos)
+        if formulario.is_valid():
+            cantidad = formulario.cleaned_data.get("cantidad")
+            
+            pedido = Pedidos.objects.filter(cliente = request.user.cliente, estado = "pen").first()
+            
+            
+            if (pedido is None):
+            
+                pedido = Pedidos.objects.create(
+                    
+                    cliente = request.user.cliente,  
+                )
+                pedido.save()
+
+            LineaPedidos.objects.create(
+                pedido = pedido,
+                coche = Inventario.coches,
+                tienda = Inventario.tienda,
+                precio = Inventario.precio,
+                cantidad = cantidad
+                )
+            
+            LineaPedidos.save()
+            
+            messages.success(request, 'Se ha realizado su compra')  
+            return redirect('index')
+        
+    else:
+        formulario = cantidadComprar(inventario = productos)
     
     return render(request, 'inventario/producto_comprar.html', {'productos': productos, 'formulario': formulario})
 
