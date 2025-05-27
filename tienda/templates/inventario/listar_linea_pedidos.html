@@ -1,0 +1,41 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+  <h1>Lista de Pedidos</h1>
+
+  {% if pedidos %}
+    <table border="1" cellspacing="0" cellpadding="8">
+      <thead>
+        <tr>
+          <th>Coche</th>
+          <th>Tienda</th>
+          <th>Cantidad</th>
+          <th>precio unitario</th>
+          <th>Precio Total</th>
+          <th>Aciones</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for pedido in pedidos %}
+          <tr>
+            <td>{{ pedido.coche.nombre }}</td>
+            <td>{{ pedido.tienda.nombre }}</td>
+            <td>{{ pedido.cantidad }}</td>
+            <td>{{ pedido.precio }}</td>
+            <td>{% widthratio pedido.cantidad 1 pedido.precio %}</td>
+            <td>
+                
+                <a class="btn btn-outline-danger" href="{% url 'eliminar_linea_pedidos' pedido.id %}">Eliminar</a>
+
+            
+            </td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No hay pedidos disponibles para este cliente.</p>
+  {% endif %}
+{% endblock contenido %}

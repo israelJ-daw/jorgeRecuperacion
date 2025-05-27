@@ -415,16 +415,16 @@ def producto_comprar_nueva(request, id_inventario):
                 )
                 pedido.save()
 
-            LineaPedidos.objects.create(
+            lineapedidos = LineaPedidos.objects.create(
                 pedido = pedido,
-                coche = Inventario.coches,
-                tienda = Inventario.tienda,
-                precio = Inventario.precio,
+                coche = productos.coches,
+                tienda = productos.tienda,
+                precio = productos.precio,
                 cantidad = cantidad
                 )
             
-            LineaPedidos.save()
-            
+            lineapedidos.save()
+
             messages.success(request, 'Se ha realizado su compra')  
             return redirect('index')
         
@@ -432,6 +432,23 @@ def producto_comprar_nueva(request, id_inventario):
         formulario = cantidadComprar(inventario = productos)
     
     return render(request, 'inventario/producto_comprar.html', {'productos': productos, 'formulario': formulario})
+
+def lista_linea_pedidos (request, id_cliente):
+    pedidos = LineaPedidos.objects.filter(pedido = id_cliente)
+
+    return render(request, 'inventario/listar_linea_pedidos.html', {'pedidos': pedidos })
+
+
+def eliminar_linea_pedidos (request, id_pedido):
+    productos = LineaPedidos.objects.get(id=id_pedido)
+
+    try:
+        productos.delete()  
+        messages.success(request, "Se han eliminado El pedido Correctamente.")
+    except Exception as error:
+        print(error)
+
+    return redirect('lista_linea_pedidos', id_cliente=request.user.cliente.id)
 
 
 

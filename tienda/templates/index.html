@@ -78,5 +78,13 @@
         <a href="{% url  'lista_pedidos'  request.user.cliente.id %}" class="btn btn-primary"> Listar Pedidos</a>
     </div>
     {% endif%}
+    
+
+    {% if user.rol == 2  %}
+    <div class="text-center mt-5" >
+        <h2>Ver mi pedido </h2> 
+        <a href="{% url  'lista_linea_pedidos'  request.user.cliente.id %}" class="btn btn-primary"> Mi Pedido</a>
+    </div>
+    {% endif%}
 
 {% endblock %}

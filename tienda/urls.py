@@ -44,6 +44,8 @@ urlpatterns = [
     path('crear/pedidos/', views.crear_pedidos, name='crear_pedidos'), 
     path('ver/pedidos/<int:id_cliente>', views.lista_pedidos, name='lista_pedidos'), 
     path('comprar/producto/<int:id_inventario>', views.producto_comprar_nueva, name='producto_comprar'), 
+    path('ver/listapedidos/<int:id_cliente>', views.lista_linea_pedidos, name='lista_linea_pedidos'), 
+    path('eliminar/<int:id_pedido>/lineapedido/', views.eliminar_linea_pedidos, name='eliminar_linea_pedidos'), 
 
 
 ] 
