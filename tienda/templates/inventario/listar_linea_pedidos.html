@@ -32,9 +32,19 @@
             </td>
 
           </tr>
+
         {% endfor %}
       </tbody>
     </table>
+
+  <div class="text-center mt-4">
+  <a href="{% url 'finalizar_pedido' request.user.cliente.id %}" class="btn btn-primary btn-lg px-5 shadow rounded-pill">
+    <i class="bi bi-check-circle me-2"></i> Finalizar Pedido
+  </a>
+</div>
+
+
+
   {% else %}
     <p>No hay pedidos disponibles para este cliente.</p>
   {% endif %}

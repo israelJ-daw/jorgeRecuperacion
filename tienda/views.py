@@ -395,7 +395,6 @@ def producto_comprar_antigua(request, id_inventario):
     return render(request, 'inventario/producto_comprar.html', {'productos': productos, 'formulario': formulario})
 
 
-
 def producto_comprar_nueva(request, id_inventario):
     productos = Inventario.objects.get(id = id_inventario)
     
@@ -416,16 +415,19 @@ def producto_comprar_nueva(request, id_inventario):
                 pedido.save()
 
             lineapedidos = LineaPedidos.objects.create(
+
                 pedido = pedido,
                 coche = productos.coches,
                 tienda = productos.tienda,
                 precio = productos.precio,
                 cantidad = cantidad
                 )
+                
             
             lineapedidos.save()
 
-            messages.success(request, 'Se ha realizado su compra')  
+
+            messages.success(request, 'Se ha realizado su pedido')  
             return redirect('index')
         
     else:
@@ -434,7 +436,7 @@ def producto_comprar_nueva(request, id_inventario):
     return render(request, 'inventario/producto_comprar.html', {'productos': productos, 'formulario': formulario})
 
 def lista_linea_pedidos (request, id_cliente):
-    pedidos = LineaPedidos.objects.filter(pedido = id_cliente)
+    pedidos = LineaPedidos.objects.filter(pedido__cliente_id=id_cliente) 
 
     return render(request, 'inventario/listar_linea_pedidos.html', {'pedidos': pedidos })
 
@@ -450,6 +452,36 @@ def eliminar_linea_pedidos (request, id_pedido):
 
     return redirect('lista_linea_pedidos', id_cliente=request.user.cliente.id)
 
+
+def finalizar_pedido (request, id_cliente):
+    pedidos = LineaPedidos.objects.filter(pedido__cliente_id=id_cliente)
+
+    if request.method == 'POST':
+        formulario = FinalizarCompra(request.POST)
+        if formulario.is_valid():
+            direccion = formulario.cleaned_data.get("direccion")
+
+
+            pedidos = Pedidos.objects.create(
+
+                    cliente = request.user.cliente,
+                    direccion = direccion,
+
+                    pedidos = pedidos,
+                    coche = pedidos.coches,
+                    tienda = pedidos.tienda,
+                    precio = pedidos.precio,
+                )
+            pedidos.save()
+
+    
+            messages.success(request, 'Se ha realizado su compra')  
+            return redirect('index')
+        
+    else:
+        formulario = FinalizarCompra()
+    
+    return render(request, 'inventario/finalizar_pedido.html', {'formulario': formulario, 'pedidos': pedidos})
 
 
 #Paginas de error 

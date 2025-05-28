@@ -154,3 +154,19 @@ class cantidadComprar(forms.Form):
         self.inventario = kwargs.pop("inventario")
         super(cantidadComprar, self).__init__(*args, **kwargs)
 
+
+class FinalizarCompra(forms.Form):
+    direccion = forms.CharField (required=True, max_length=100)
+
+    def clean(self):
+        super().clean()
+    
+        direccion = self.cleaned_data.get('direccion')
+    
+    
+        if len(direccion) < 5:
+            self.add_error('direccion', "Escribe una calle real")
+
+    help_texts = {
+        'direccion': "Escribe la calle de envio",
+    }         
