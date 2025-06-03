@@ -14,7 +14,6 @@
             <thead class="table-primary text-center text-white">
                 <tr>
                     <th scope="col">Pedido ID</th>
-                    <th scope="col">Tienda</th>
                     <th scope="col">Total del Pedido</th>
                     <th scope="col">Cuenta Bancaria</th>
                 </tr>
@@ -22,10 +21,7 @@
             <tbody class="bg-light">
                 {% for pedido in pedidos %}
                 <tr class="text-center">
-                    <td>{{ pedido.id }}</td>
-                    {% for tienda in tiendas %}
-                    <td>{{ tienda.nombre }}</td>
-                    {% endfor %}
+                    <td>{{ forloop.counter }}</td>
                     <td>
                         {% with total_pedido=0 %}
                         {% for linea in pedido.lineapedidos_set.all %}

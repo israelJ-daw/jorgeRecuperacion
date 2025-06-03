@@ -360,7 +360,7 @@ def buscarProductos(request):
 
 
 def lista_pedidos(request):
-    producto = Inventario.objects.all()
+    producto = LineaPedidos.objects.all()
     pedidos= Pedidos.objects.select_related("cliente").all()
     return render(request, "inventario/listar_pedidos.html", {'pedidos_mostrar': pedidos, 'productos':producto})
 
@@ -435,8 +435,8 @@ def producto_comprar_nueva(request, id_inventario):
     
     return render(request, 'inventario/producto_comprar.html', {'productos': productos, 'formulario': formulario})
 
-def lista_linea_pedidos (request, id_cliente):
-    pedidos = LineaPedidos.objects.filter(pedido__cliente_id=id_cliente) 
+def lista_linea_pedidoss (request, id_cliente):
+    pedidos = LineaPedidos.objects.filter(pedido__cliente_id=id_cliente).all()
 
     return render(request, 'inventario/listar_linea_pedidos.html', {'pedidos': pedidos })
 
@@ -557,7 +557,7 @@ def busqueda_inventario(request):
 
 
 def detalles_pago(request, id_clientes):
-    pedidos = Pedidos.objects.filter(cliente__id=id_clientes)
+    pedidos = Pedidos.objects.filter(cliente=request.user.cliente.id)
     
     tienda = Tienda.objects.all()
     try:
@@ -565,15 +565,12 @@ def detalles_pago(request, id_clientes):
     except CuentaBancaria.DoesNotExist:
         cuenta_bancaria = None
     
-    # Inicializar el total pagado
     total_pagado = 0 
 
-    # Calcular el total pagado por todos los pedidos
     for pedido in pedidos:
         for linea in pedido.lineapedidos_set.all():
             total_pagado += linea.precio * linea.cantidad
 
-    # Pasar los pedidos, el total pagado y la cuenta bancaria a la plantilla
     return render(request, 'pago/detalles_pago.html', {
         'total_pagado': total_pagado,
         'pedidos': pedidos,
@@ -583,29 +580,23 @@ def detalles_pago(request, id_clientes):
 
 
 def devolver_pedido(request, pedido_id):
-    # Obtener el pedido
     pedido = Pedidos.objects.filter(id=pedido_id, cliente=request.user.cliente).first()
 
-    # Verificar si el pedido existe y si pertenece al cliente
     if not pedido:
         return render(request, 'errores/404.html', {'message': 'El pedido no existe o no pertenece a tu cuenta.'})
 
-    # Cambiar el estado del pedido a 'devuelto'
     pedido.estado = 'dev'
     pedido.save()
 
-    # Recorrer los productos del pedido y actualizar el inventario
     for linea in pedido.lineapedidos_set.all():
         coche = linea.coche
         tienda = linea.tienda
         cantidad_devuelta = linea.cantidad
 
-        # Actualizar el inventario de la tienda
         inventario = Inventario.objects.get(tienda=tienda, coches=coche)
-        inventario.cantidad += cantidad_devuelta  # Aumentamos el stock con la cantidad devuelta
+        inventario.cantidad += cantidad_devuelta  
         inventario.save()
 
-    # Redirigir a la página de éxito o detalles del pedido
     return render(request, 'pago/devolver.html', {'pedido': pedido})
 
 
