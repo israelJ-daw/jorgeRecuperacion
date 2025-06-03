@@ -28,7 +28,8 @@
                 
                 <a class="btn btn-outline-danger" href="{% url 'eliminar_linea_pedidos' pedido.id %}">Eliminar</a>
 
-            
+                <a class="btn btn-outline-primary" href="{% url 'editar_linea_pedido' pedido.id %}">Editar</a>
+
             </td>
 
           </tr>
@@ -38,7 +39,7 @@
     </table>
 
   <div class="text-center mt-4">
-  <a href="{% url 'finalizar_pedido' request.user.cliente.id %}" class="btn btn-primary btn-lg px-5 shadow rounded-pill">
+  <a href="{% url 'finalizar_pedido'%}" class="btn btn-primary btn-lg px-5 shadow rounded-pill">
     <i class="bi bi-check-circle me-2"></i> Finalizar Pedido
   </a>
 </div>

@@ -1,30 +1,80 @@
 {% extends "estructura/principal.html" %}
+{% load bootstrap_icons %}
 
 {% block contenido %}
-  <h1>Lista de Pedidos</h1>
+<div class="container my-5">
+  <h2 class="text-center mb-4 display-5 fw-bold text-primary">🛒 Tus Pedidos Completados</h2>
 
-  {% if pedidos %}
-    <table border="1" cellspacing="0" cellpadding="8">
-      <thead>
-        <tr>
-          <th>Coche</th>
-          <th>Fecha del Pedido</th>
-          <th>Cantidad</th>
-          <th>Dirección</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for pedido in pedidos %}
+  {% if pedidos_mostrar %}
+    <div class="table-responsive shadow rounded-4 overflow-hidden">
+      <table class="table table-bordered table-hover align-middle mb-0">
+        <thead class="table-primary text-center text-white">
           <tr>
-            <td>{{ pedido.coche.nombre }}</td>
-            <td>{{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
-            <td>{{ pedido.cantidad }}</td>
-            <td>{{ pedido.direccion }}</td>
+            <th scope="col">#</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Dirección de Envío</th>
+            <th scope="col">Coches Pedidos</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Acciones</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody class="bg-light">
+          {% for pedido in pedidos_mostrar %}
+            <tr class="text-center">
+              <td class="fw-semibold">{{ forloop.counter }}</td>
+              
+              <!-- Estado del pedido -->
+              <td>
+                {% if pedido.estado == "comp" %}
+                  <strong class="badge bg-success">Completado</strong>
+                {% elif pedido.estado == "pen" %}
+                  <strong class="badge bg-warning text-dark">Pendiente</strong>
+                {% elif pedido.estado == "anu" %}
+                  <strong class="badge bg-danger">Anulado</strong>
+                {% else %}
+                  <strong>{{ pedido.estado }}</strong>
+                {% endif %}
+              </td>
+              
+              <td><strong>{{ pedido.direccion }}</strong></td>
+              
+              <td class="text-start">
+                {% for producto in productos %}
+                  <strong>{{ producto.coches.nombre }}</strong><br>
+                {% endfor %}
+              </td>
+
+              <td class="text-start">
+                {% for producto in productos %}
+                  <strong>{{producto.cantidad }}</strong><br>
+                {% endfor %}
+              </td>
+              
+              <td>
+                <a href="{% url 'eliminar_pedidos' pedido.id %}" 
+                   class="btn btn-outline-danger btn-sm px-3 rounded-pill" 
+                   onclick="return confirm('¿Estás seguro de que quieres eliminar este pedido?');">
+                  <i class="bi bi-trash3-fill me-1"></i> Eliminar
+                </a>
+
+                <a href="{% url 'devolver_pedido' pedido.id %}" class="btn btn-outline-primary btn-lg rounded-pill">Devolver Pedido</a>
+
+                
+
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <a href="{% url 'detalles_pago' request.user.cliente.id %}" class="btn btn-outline-primary btn-lg rounded-pill">Detalles del pedido</a>
+
+
+    </div>
   {% else %}
-    <p>No hay pedidos disponibles para este cliente.</p>
+    <div class="alert alert-info text-center mt-4">
+      <i class="bi bi-info-circle-fill"></i> No hay pedidos disponibles en este momento.
+    </div>
   {% endif %}
-{% endblock contenido %}
+</div>
+{% endblock %}

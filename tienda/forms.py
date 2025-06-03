@@ -78,6 +78,9 @@ class TiendaModelForms(ModelForm):
 
         if len(telefono) < 5:
             self.add_error('telefono', "Escriba un telefono Real!!")
+
+        return self.cleaned_data  
+
             
 class CuentaModelForms(ModelForm):
     class Meta:
@@ -158,6 +161,10 @@ class cantidadComprar(forms.Form):
 class FinalizarCompra(forms.Form):
     direccion = forms.CharField (required=True, max_length=100)
 
+    help_texts = {
+        'direccion': "Escribe la calle de envio",
+    }
+
     def clean(self):
         super().clean()
     
@@ -166,7 +173,31 @@ class FinalizarCompra(forms.Form):
     
         if len(direccion) < 5:
             self.add_error('direccion', "Escribe una calle real")
+    
+        return self.cleaned_data  
+    
+class cantidadEditar(forms.ModelForm):
 
-    help_texts = {
-        'direccion': "Escribe la calle de envio",
-    }         
+    class Meta:
+        model = LineaPedidos
+        fields = ['cantidad']
+        labels = {
+                'cantidad': ("Indica la cantidad de la pieza"),
+            }
+    
+
+class BusquedaInventarioForm(forms.Form):
+    tienda = forms.ModelChoiceField(
+        queryset=Tienda.objects.all(),
+        required=False,
+        empty_label="Todas las tiendas"
+    )
+    coche = forms.ModelChoiceField(
+        queryset=Coche.objects.all(),
+        required=False,
+        empty_label="Todos los coches"
+    )
+    cantidad_min = forms.IntegerField(label='Cantidad mínima', required=False)
+    cantidad_max = forms.IntegerField(label='Cantidad máxima', required=False)
+    precio_min = forms.IntegerField(label='Precio mínimo', required=False)
+    precio_max = forms.IntegerField(label='Precio máximo', required=False)

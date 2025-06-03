@@ -1,0 +1,18 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+
+  {% if pedido.estado == 'dev' %}
+    <div class="alert alert-success">
+      <strong>Pedido devuelto correctamente.</strong> El stock ha sido actualizado.
+    </div>
+  {% else %}
+    <form action="{% url 'devolver_pedido' pedido.id %}" method="post">
+      {% load django_bootstrap5 %}
+      {% csrf_token %}
+      <p>¿Estás seguro de que quieres devolver este pedido?</p>
+      {% bootstrap_button "Confirmar devolución" button_type="submit" button_class="btn-danger" %}
+    </form>
+  {% endif %}
+
+{% endblock contenido %}

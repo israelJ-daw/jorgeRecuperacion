@@ -42,9 +42,19 @@ urlpatterns = [
     path('todos/productos/', views.ver_productos, name='ver_productos'), 
     #pedidos
     path('crear/pedidos/', views.crear_pedidos, name='crear_pedidos'), 
-    path('ver/pedidos/<int:id_cliente>', views.lista_pedidos, name='lista_pedidos'), 
+    path('ver/pedidos/', views.lista_pedidos, name='lista_pedidos'),
     path('comprar/producto/<int:id_inventario>', views.producto_comprar_nueva, name='producto_comprar'), 
     path('ver/listapedidos/<int:id_cliente>', views.lista_linea_pedidos, name='lista_linea_pedidos'), 
     path('eliminar/<int:id_pedido>/lineapedido/', views.eliminar_linea_pedidos, name='eliminar_linea_pedidos'), 
-    path('Finalizar/<int:id_cliente>/pedido/', views.finalizar_pedido, name='finalizar_pedido'),
+    path('Finalizar/lineapedido/', views.finalizar_pedido, name='finalizar_pedido'),
+    path('Editar/<int:id_pedido>/lineapedido/', views.editar_linea_pedido, name='editar_linea_pedido'),
+    path('eliminar/<int:id_pedido>/pedido/', views.eliminar_pedidos, name='eliminar_pedidos'), 
+    path('buscar_inventario/', views.busqueda_inventario, name='buscar_inventario'),
+    #pagos
+    path('detalles/pagos/<int:id_clientes>', views.detalles_pago, name='detalles_pago'),
+    path('pedido/<int:pedido_id>/devolver/', views.devolver_pedido, name='devolver_pedido'),
+
+
+
 ] 
+    

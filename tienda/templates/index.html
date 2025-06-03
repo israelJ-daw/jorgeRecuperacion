@@ -75,7 +75,7 @@
     {% if user.rol == 2  %}
     <div class="text-center mt-5" >
         <h2>Listar Pedidos </h2> 
-        <a href="{% url  'lista_pedidos'  request.user.cliente.id %}" class="btn btn-primary"> Listar Pedidos</a>
+        <a href="{% url  'lista_pedidos' %}" class="btn btn-primary"> Listar Pedidos</a>
     </div>
     {% endif%}
     

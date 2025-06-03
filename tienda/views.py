@@ -123,7 +123,6 @@ def coche_eliminar(request, id_coche):
         print(Error)
     return redirect ('lista_coche')        
 
-@permission_required('tienda.view_cliente')
 def detalle_cliente(request, id_cliente):
     if request.user.cliente.id == id_cliente:
         cliente = Cliente.objects.get(id = id_cliente)
@@ -360,10 +359,11 @@ def buscarProductos(request):
 
 
 
-def lista_pedidos (request, id_cliente):
-    pedidos = Pedidos.objects.filter(cliente_id = id_cliente)
+def lista_pedidos(request):
+    producto = Inventario.objects.all()
+    pedidos= Pedidos.objects.select_related("cliente").all()
+    return render(request, "inventario/listar_pedidos.html", {'pedidos_mostrar': pedidos, 'productos':producto})
 
-    return render(request, 'inventario/listar_pedidos.html', {'pedidos': pedidos })
 
 
 def producto_comprar_antigua(request, id_inventario):
@@ -453,35 +453,161 @@ def eliminar_linea_pedidos (request, id_pedido):
     return redirect('lista_linea_pedidos', id_cliente=request.user.cliente.id)
 
 
-def finalizar_pedido (request, id_cliente):
-    pedidos = LineaPedidos.objects.filter(pedido__cliente_id=id_cliente)
-
+def editar_linea_pedido(request, id_pedido):
+    linea = LineaPedidos.objects.get(id=id_pedido)
+    
     if request.method == 'POST':
+        formulario = cantidadEditar(request.POST, instance=linea)
+        if formulario.is_valid():
+
+            linea.cantidad = formulario.cleaned_data.get("cantidad")
+            linea.save()
+            messages.success(request, "Cantidad actualizada correctamente.")
+            return redirect("lista_linea_pedidos", id_cliente=request.user.cliente.id)
+    else:
+        formulario = cantidadEditar(instance=linea)
+
+    return render(request, 'inventario/editar_linea_pedido.html', {'formulario': formulario, 'linea': linea})
+
+
+
+def finalizar_pedido(request):
+    pedido = Pedidos.objects.filter(cliente=request.user.cliente, estado='pen').first()
+
+    if not pedido:
+        messages.error(request, "No se ha encontrado el pedido o el estado no es el esperado.")
+        return redirect("index") 
+
+    if request.method == 'POST':    
         formulario = FinalizarCompra(request.POST)
         if formulario.is_valid():
-            direccion = formulario.cleaned_data.get("direccion")
+            pedido.direccion = formulario.cleaned_data.get("direccion")
+            pedido.estado = 'comp'
 
-
-            pedidos = Pedidos.objects.create(
-
-                    cliente = request.user.cliente,
-                    direccion = direccion,
-
-                    pedidos = pedidos,
-                    coche = pedidos.coches,
-                    tienda = pedidos.tienda,
-                    precio = pedidos.precio,
-                )
-            pedidos.save()
-
-    
-            messages.success(request, 'Se ha realizado su compra')  
-            return redirect('index')
+            lineas = LineaPedidos.objects.filter(pedido=pedido)
+            for linea in lineas:
+                inventario = Inventario.objects.get(
+                tienda=linea.tienda,
+                coches=linea.coche  )
         
+            inventario.cantidad -= linea.cantidad
+            inventario.save()
+
+
+            pedido.save()
+
+            LineaPedidos.objects.filter(pedido=pedido).delete()
+        
+            messages.success(request, "Tu compra se ha realizado con éxito.")
+            return redirect("lista_pedidos")
+    
     else:
         formulario = FinalizarCompra()
+        
+    return render(request, 'inventario/finalizar_pedido.html', {'formulario': formulario, 'pedido': pedido})
+
+
+def eliminar_pedidos(request, id_pedido):
+    pedido = Pedidos.objects.filter(id=id_pedido).first()
+
+    if pedido:
+        try:
+            pedido.delete()  
+            messages.success(request, "Se ha eliminado el pedido correctamente.")
+        except Exception as error:
+            print(error)
+            messages.error(request, "Hubo un error al intentar eliminar el pedido.")
+    else:
+        messages.warning(request, "El pedido no existe.")
+
+    return redirect('lista_pedidos')
+
+
+
+def busqueda_inventario(request):
+    form = BusquedaInventarioForm(request.GET)
     
-    return render(request, 'inventario/finalizar_pedido.html', {'formulario': formulario, 'pedidos': pedidos})
+    productos = Inventario.objects.all()
+
+    if form.is_valid():
+        tienda = form.cleaned_data.get('tienda')
+        coche = form.cleaned_data.get('coche')
+        cantidad_min = form.cleaned_data.get('cantidad_min')
+        cantidad_max = form.cleaned_data.get('cantidad_max')
+        precio_min = form.cleaned_data.get('precio_min')
+        precio_max = form.cleaned_data.get('precio_max')
+
+        if tienda:
+            productos = productos.filter(tienda__nombre__icontains=tienda)
+        if coche:
+            productos = productos.filter(coches__nombre__icontains=coche)
+        if cantidad_min:
+            productos = productos.filter(cantidad__gte=cantidad_min)
+        if cantidad_max:
+            productos = productos.filter(cantidad__lte=cantidad_max)
+        if precio_min:
+            productos = productos.filter(precio__gte=precio_min)
+        if precio_max:
+            productos = productos.filter(precio__lte=precio_max)
+
+    return render(request, 'inventario/buscar_inventario.html', {
+        'form': form,
+        'productos': productos
+    })
+
+
+def detalles_pago(request, id_clientes):
+    pedidos = Pedidos.objects.filter(cliente__id=id_clientes)
+    
+    tienda = Tienda.objects.all()
+    try:
+        cuenta_bancaria = CuentaBancaria.objects.get(cliente__id=id_clientes)
+    except CuentaBancaria.DoesNotExist:
+        cuenta_bancaria = None
+    
+    # Inicializar el total pagado
+    total_pagado = 0 
+
+    # Calcular el total pagado por todos los pedidos
+    for pedido in pedidos:
+        for linea in pedido.lineapedidos_set.all():
+            total_pagado += linea.precio * linea.cantidad
+
+    # Pasar los pedidos, el total pagado y la cuenta bancaria a la plantilla
+    return render(request, 'pago/detalles_pago.html', {
+        'total_pagado': total_pagado,
+        'pedidos': pedidos,
+        'cuenta_bancaria': cuenta_bancaria,
+        'tiendas' : tienda
+    })
+
+
+def devolver_pedido(request, pedido_id):
+    # Obtener el pedido
+    pedido = Pedidos.objects.filter(id=pedido_id, cliente=request.user.cliente).first()
+
+    # Verificar si el pedido existe y si pertenece al cliente
+    if not pedido:
+        return render(request, 'errores/404.html', {'message': 'El pedido no existe o no pertenece a tu cuenta.'})
+
+    # Cambiar el estado del pedido a 'devuelto'
+    pedido.estado = 'dev'
+    pedido.save()
+
+    # Recorrer los productos del pedido y actualizar el inventario
+    for linea in pedido.lineapedidos_set.all():
+        coche = linea.coche
+        tienda = linea.tienda
+        cantidad_devuelta = linea.cantidad
+
+        # Actualizar el inventario de la tienda
+        inventario = Inventario.objects.get(tienda=tienda, coches=coche)
+        inventario.cantidad += cantidad_devuelta  # Aumentamos el stock con la cantidad devuelta
+        inventario.save()
+
+    # Redirigir a la página de éxito o detalles del pedido
+    return render(request, 'pago/devolver.html', {'pedido': pedido})
+
 
 
 #Paginas de error 

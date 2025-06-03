@@ -2,7 +2,7 @@
 
 {% block contenido %}
 
-<form action="{% url 'finalizar_pedido' request.user.cliente.id %}" method="post">
+<form action="{% url 'finalizar_pedido' %}" method="post">
 
     {% load django_bootstrap5 %}
     {% csrf_token %}

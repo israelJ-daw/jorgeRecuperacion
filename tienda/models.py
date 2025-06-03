@@ -86,7 +86,8 @@ class Pedidos(models.Model):
   estados = [
     ("comp" , "completado"),
     ("pen" , "pendiente"),
-    ("anu" , "anulado")
+    ("anu" , "anulado"),
+    ("dev" , "devuelto") 
   ]
   estado = models.CharField(
     max_length=30, choices=estados,default="pen"
@@ -98,3 +99,10 @@ class LineaPedidos(models.Model):
   tienda = models.ForeignKey(Tienda, on_delete=models.CASCADE)
   precio = models.IntegerField()
   cantidad = models.IntegerField()
+
+
+class Pago(models.Model):
+  cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)  
+  cuenta_bancaria = models.ForeignKey(CuentaBancaria, on_delete=models.CASCADE)
+  pedido = models.ForeignKey('Pedidos', on_delete=models.CASCADE) 
+  cantidad_pago = models.DecimalField(max_digits=10, decimal_places=2)
