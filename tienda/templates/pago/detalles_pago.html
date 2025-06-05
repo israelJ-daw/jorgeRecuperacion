@@ -3,46 +3,46 @@
 {% block contenido %}
 <div class="container my-5">
     <h2 class="text-center mb-4 display-5 fw-bold text-primary">🛒 Detalles de Pago</h2>
-
-    <div class="total">
-        <h3 class="text-center">Total Pagado: €{{ total_pagado }}</h3>
-    </div>
     
-    <h3 class="text-center mt-5">Pedidos Realizados</h3>
+    <h3 class="text-center mt-5">Pedido Realizados</h3>
     <div class="table-responsive shadow rounded-4 overflow-hidden">
         <table class="table table-bordered table-hover align-middle mb-0">
             <thead class="table-primary text-center text-white">
                 <tr>
-                    <th scope="col">Pedido ID</th>
-                    <th scope="col">Total del Pedido</th>
-                    <th scope="col">Cuenta Bancaria</th>
+                    <th scope="col">Nº</th>
+                    <th scope="col">Linea Pedido</th>
+                    <th scope="col">cantidad</th>
+                    <th scope="col">Total linea</th>
+
+
                 </tr>
             </thead>
             <tbody class="bg-light">
-                {% for pedido in pedidos %}
+            {% for pedido in pedidos %}
                 <tr class="text-center">
                     <td>{{ forloop.counter }}</td>
-                    <td>
-                        {% with total_pedido=0 %}
-                        {% for linea in pedido.lineapedidos_set.all %}
-                            {% with total_pedido=total_pedido|add:linea.precio|add:linea.cantidad %}
-                            {% endwith %}
-                        {% endfor %}
-                        €{{ total_pedido }}
-                        {% endwith %}
-                    </td>
-                    <td>
-                        {% if cuenta_bancaria %}
-                            {{ cuenta_bancaria.banco }} - {{ cuenta_bancaria.iban }}
-                        {% else %}
-                            No existe
-                        {% endif %}
-                    </td>
+                    
+                    <td>{{ pedido.coche.nombre }}</td>
+
+                    <td>{{ pedido.cantidad}}</td>
+
+                    <td>{% widthratio pedido.cantidad 1 pedido.precio %}</td>
+
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     </div>
+  <h4>Total Gastado</h4>
+    {{total_precio}}
 
+
+
+  <h4>Cuenta Bancaria</h4>
+        {% if cuenta_bancaria %}
+            {{ cuenta_bancaria.banco }} - {{ cuenta_bancaria.iban }}
+        {% else %}
+            No existe
+        {% endif %} 
 </div>
 {% endblock %}

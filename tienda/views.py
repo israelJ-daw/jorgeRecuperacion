@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from django.http import Http404
+from django.db.models import Sum, F
 
 from .models import *
 # Create your views here.
@@ -495,8 +496,6 @@ def finalizar_pedido(request):
 
 
             pedido.save()
-
-            LineaPedidos.objects.filter(pedido=pedido).delete()
         
             messages.success(request, "Tu compra se ha realizado con éxito.")
             return redirect("lista_pedidos")
@@ -550,53 +549,41 @@ def busqueda_inventario(request):
         if precio_max:
             productos = productos.filter(precio__lte=precio_max)
 
-    return render(request, 'inventario/buscar_inventario.html', {
-        'form': form,
-        'productos': productos
-    })
+    return render(request, 'inventario/buscar_inventario.html', { 'form': form, 'productos': productos })
 
 
 def detalles_pago(request, id_clientes):
-    pedidos = Pedidos.objects.filter(cliente=request.user.cliente.id)
-    
-    tienda = Tienda.objects.all()
+    pedidos = LineaPedidos.objects.filter(pedido__cliente_id=id_clientes).all()
+
     try:
         cuenta_bancaria = CuentaBancaria.objects.get(cliente__id=id_clientes)
     except CuentaBancaria.DoesNotExist:
         cuenta_bancaria = None
+        
     
-    total_pagado = 0 
+    totales = pedidos.aggregate (
+        
+        total_cantidad = Sum('cantidad'),
+        total_precio=Sum(F('cantidad')* F('precio'))
+    )    
+    
+    total_precio = totales ['total_precio'] or 0
 
-    for pedido in pedidos:
-        for linea in pedido.lineapedidos_set.all():
-            total_pagado += linea.precio * linea.cantidad
-
-    return render(request, 'pago/detalles_pago.html', {
-        'total_pagado': total_pagado,
-        'pedidos': pedidos,
-        'cuenta_bancaria': cuenta_bancaria,
-        'tiendas' : tienda
-    })
+    return render(request, 'pago/detalles_pago.html', { 'pedidos': pedidos, 'cuenta_bancaria': cuenta_bancaria, 'total_precio' : total_precio })
 
 
 def devolver_pedido(request, pedido_id):
     pedido = Pedidos.objects.filter(id=pedido_id, cliente=request.user.cliente).first()
+    
+    productos = Inventario.objects.get(id = pedido_id)
 
     if not pedido:
-        return render(request, 'errores/404.html', {'message': 'El pedido no existe o no pertenece a tu cuenta.'})
+        return render(request, 'errores/404.html', {'message': 'El pedido no existe'})
 
     pedido.estado = 'dev'
     pedido.save()
-
-    for linea in pedido.lineapedidos_set.all():
-        coche = linea.coche
-        tienda = linea.tienda
-        cantidad_devuelta = linea.cantidad
-
-        inventario = Inventario.objects.get(tienda=tienda, coches=coche)
-        inventario.cantidad += cantidad_devuelta  
-        inventario.save()
-
+        
+    
     return render(request, 'pago/devolver.html', {'pedido': pedido})
 
 
