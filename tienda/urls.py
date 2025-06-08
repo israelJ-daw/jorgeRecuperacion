@@ -50,9 +50,16 @@ urlpatterns = [
     path('Editar/<int:id_pedido>/lineapedido/', views.editar_linea_pedido, name='editar_linea_pedido'),
     path('eliminar/<int:id_pedido>/pedido/', views.eliminar_pedidos, name='eliminar_pedidos'), 
     path('buscar_inventario/', views.busqueda_inventario, name='buscar_inventario'),
+    path('productos_pedidos/', views.lista_producto_pedidos, name='productos_pedidos'),
     #pagos
     path('detalles/pagos/<int:id_clientes>', views.detalles_pago, name='detalles_pago'),
     path('pedido/<int:pedido_id>/devolver/', views.devolver_pedido, name='devolver_pedido'),
+    #API
+    path('productos-api/', views.listar_productos_api, name='listar_productos_api'),
+    path('productos-api/crear/', views.crear_producto_api, name='crear_producto_api'),
+    path('productos-api/eliminar/<int:producto_id>/', views.eliminar_producto_api, name='eliminar_producto_api'),
+    path('añadir/producto-api/tienda/', views.producto_form, name='agregar_producto_a_tienda'),
+
 
 
 

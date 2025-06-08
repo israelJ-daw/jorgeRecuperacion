@@ -6,6 +6,10 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 from django.http import Http404
 from django.db.models import Sum, F
+import requests
+from django.shortcuts import render, redirect
+from django.http import Http404
+
 
 from .models import *
 # Create your views here.
@@ -256,24 +260,26 @@ def datos_editar(request, id_vendedor):
 
 
 permission_required("tienda.add_inventario")
+
+from django.http import HttpResponse
+
+
 def crear_inventario(request):
-    
-    if request.method == 'POST':
-        formulario = CrearInventarioForms(request.POST, request=request)
-        if formulario.is_valid():
-            inventario = Inventario.objects.filter(tienda = formulario.cleaned_data.get("tienda"), coches = formulario.cleaned_data.get("coches")).first()
-            if (inventario is None):
-                formulario.save()
-            else: 
-                inventario.cantidad += formulario.cleaned_data.get("cantidad")
-                inventario.save()     
-            messages.success(request, 'Se ha añadido Correctamente')
-            return redirect ("lista_tienda")
-    else:
-        formulario = CrearInventarioForms(None, request=request)
-    return render (request, 'inventario/crear_inventario.html', {'formulario': formulario})
-
-
+  
+   if request.method == 'POST':
+       formulario = CrearInventarioForms(request.POST, request=request)
+       if formulario.is_valid():
+           inventario = Inventario.objects.filter(tienda = formulario.cleaned_data.get("tienda"), coches = formulario.cleaned_data.get("coches")).first()
+           if (inventario is None):
+               formulario.save()
+           else:
+               inventario.cantidad += formulario.cleaned_data.get("cantidad")
+               inventario.save()    
+           messages.success(request, 'Se ha añadido Correctamente')
+           return redirect ("lista_tienda")
+   else:
+       formulario = CrearInventarioForms(None, request=request)
+   return render (request, 'inventario/crear_inventario.html', {'formulario': formulario})
 
 def lista_productos(request, tienda_id):
     productos = Inventario.objects.filter(tienda_id=tienda_id)
@@ -572,19 +578,120 @@ def detalles_pago(request, id_clientes):
     return render(request, 'pago/detalles_pago.html', { 'pedidos': pedidos, 'cuenta_bancaria': cuenta_bancaria, 'total_precio' : total_precio })
 
 
+
 def devolver_pedido(request, pedido_id):
+    # Recuperamos el pedido y verificamos si pertenece al cliente actual
     pedido = Pedidos.objects.filter(id=pedido_id, cliente=request.user.cliente).first()
-    
-    productos = Inventario.objects.get(id = pedido_id)
 
-    if not pedido:
-        return render(request, 'errores/404.html', {'message': 'El pedido no existe'})
-
+    # Cambiar el estado del pedido a 'dev' (devolución)
     pedido.estado = 'dev'
     pedido.save()
-        
-    
+
+    # Ahora, procesamos cada línea del pedido (cada coche)
+    for linea in pedido.lineapedidos_set.all():  # Accedemos a las líneas del pedido
+        coche = linea.coche  # El coche que fue pedido
+        cantidad_devuelta = linea.cantidad  # La cantidad de coches que se devuelve
+
+        # Actualizamos el stock del coche en la tienda
+        inventario = Inventario.objects.filter(tienda=linea.tienda, coches=coche).first()
+
+        if inventario:
+            # Aumentamos la cantidad de coches en el inventario de la tienda
+            inventario.cantidad += cantidad_devuelta
+            inventario.save()
+
+    # Finalmente, renderizamos la página de devolución
     return render(request, 'pago/devolver.html', {'pedido': pedido})
+
+
+
+
+def lista_producto_pedidos(request):
+    lineas = LineaPedidos.objects.filter(tienda__vendedor=request.user.vendedor)
+    return render(request, 'inventario/productos_pedidos.html', {'lineas': lineas})
+
+
+#API
+
+
+# LISTAR productos desde la API
+def listar_productos_api(request):
+    headers = {"Authorization": "Bearer hydM8WXEPTEjVIm2n8T8BN0nIst7iz"} 
+    response = requests.get('http://127.0.0.1:8000/api/v1/productos/', headers=headers)
+    productos = response.json() if response.status_code == 200 else []
+    return render(request, 'tienda_api/listar_productos_api.html', {'productos': productos})
+
+# CREAR producto a través de la API
+def crear_producto_api(request):
+    if request.method == 'POST':
+        form = cocheModelForms(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            headers = {
+                "Authorization": "Bearer hydM8WXEPTEjVIm2n8T8BN0nIst7iz"
+            }
+            response = requests.post(
+                'http://127.0.0.1:8000/api/v1/producto-api/crear/', 
+                headers=headers,
+                data=data
+            )
+            if response.status_code == 201:
+                messages.success(request, 'Se ha creado el producto')
+
+                return redirect('index')
+            else:
+                print(f"Error al crear producto: {response.status_code} - {response.text}")
+    else:
+        form = cocheModelForms()
+
+    return render(request, 'tienda_api/crear_producto_api.html', {'form': form})
+
+
+
+
+# ELIMINAR producto a través de la API
+
+
+def eliminar_producto_api(request, producto_id):
+    try:
+        headers = {
+            "Authorization": "Bearer hydM8WXEPTEjVIm2n8T8BN0nIst7iz"
+        }
+        response = requests.delete(
+            f'http://127.0.0.1:8000/api/v1/producto-api/eliminar/{producto_id}/',
+            headers=headers,
+        )
+
+        if response.status_code == requests.codes.no_content:
+            return redirect("index")
+        else:
+            print(f"Código de estado inesperado: {response.status_code}")
+            response.raise_for_status()
+
+    except Exception as err:
+        print(f'Ocurrió un error: {err}')
+        return mi_error_500(request)
+
+    return redirect("index")
+
+
+
+
+def producto_form(request):
+    if request.method == 'POST':
+        form = ProductoAPIForm2(request.POST, request=request)
+        if form.is_valid():
+            # Aquí obtienes el producto y la tienda seleccionada
+            producto_id = form.cleaned_data['producto_id']
+            tienda = form.cleaned_data['tienda']
+            # Lógica para añadir el producto a la tienda, guardarlo, etc.
+            # O redirigir a una página de confirmación
+    else:
+        form = ProductoAPIForm2(request=request)
+
+    return render(request, 'tienda_api/producto_form.html', {'form': form})
+
+
 
 
 

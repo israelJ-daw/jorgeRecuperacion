@@ -1,0 +1,11 @@
+<!-- tienda/templates/tienda/producto_form.html -->
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+    <h2>Formulario para Seleccionar Producto</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar</button>
+    </form>
+{% endblock  %}

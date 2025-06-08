@@ -87,4 +87,20 @@
     </div>
     {% endif%}
 
+    {% if user.rol == 3  %}
+    <div class="text-center mt-5" >
+        <h2>Ver Productos Pedidos </h2> 
+        <a href="{% url  'productos_pedidos' %}" class="btn btn-primary"> Productos Pedidos </a>
+    </div>
+    {% endif%}
+
+    <div class="text-center mt-5">
+        <h2>Productos API</h2>
+        <a href="{% url 'listar_productos_api' %}" class="btn btn-outline-primary m-2">📋 Listar productos API</a>
+        <a href="{% url 'crear_producto_api' %}" class="btn btn-outline-success m-2">➕ Crear producto API</a>
+        <a href="{% url 'agregar_producto_a_tienda' %}" class="btn btn-outline-success m-2"> Añadir Producto-API Tienda</a>
+
+    </div>
+
+
 {% endblock %}

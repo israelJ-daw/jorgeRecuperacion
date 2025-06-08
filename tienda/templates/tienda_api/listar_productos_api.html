@@ -1,0 +1,36 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Listado de Productos</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-primary">
+            <tr class="text-center">
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+            <tr class="text-center">
+                <td>{{ producto.id }}</td>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.precio }}</td>
+                <td>
+                    <a href="{% url 'eliminar_producto_api' producto.id %}" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este producto?');">
+                        🗑️ Eliminar
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">No hay productos disponibles.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock contenido %}

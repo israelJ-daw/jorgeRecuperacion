@@ -1,0 +1,26 @@
+{% extends "estructura/principal.html" %}
+
+{% block contenido %}
+  <h1 style="text-align: center; color: #333;">Producto que han sido comprado</h1>
+
+  {% if lineas %}
+    <table style="width: 90%; margin: 30px auto; border-collapse: collapse; background-color: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+      <thead>
+        <tr style="background-color: #007BFF; color: white;">
+          <th style="padding: 12px; border: 1px solid #ccc;">Coche</th>
+          <th style="padding: 12px; border: 1px solid #ccc;">Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for linea in lineas %}
+          <tr style="text-align: center; {% if forloop.counter0|divisibleby:2 %}background-color: #f9f9f9;{% endif %}">
+            <td style="padding: 10px; border: 1px solid #ccc;">{{ linea.coche.nombre }}</td>
+            <td style="padding: 10px; border: 1px solid #ccc;">{{ linea.cantidad }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="text-align: center; color: #888; font-style: italic;">No hay pedidos registrados todavía.</p>
+  {% endif %}
+{% endblock %}

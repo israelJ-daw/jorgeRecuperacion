@@ -101,27 +101,27 @@ class DatosModelForms(ModelForm):
         }        
         
         
-        
-        
+import requests
+
 class CrearInventarioForms(ModelForm):
-    class Meta:
-        model = Inventario
-        fields = ['tienda' , 'coches', 'cantidad' , 'precio']
-        help_texts = {
-            'tienda' : ("indica la tienda que es"),
-            'cantidad' : ("Cantidad de coches")
-        }
-        
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        super(CrearInventarioForms, self).__init__ (*args, **kwargs)
-        tiendasDisponibles = Tienda.objects.filter(vendedor = self.request.user.vendedor).all()
-        self.fields["tienda"] = forms.ModelChoiceField(
-            queryset=tiendasDisponibles,
-            widget=forms.Select,
-            required=True,
-            empty_label="Ninguna"
-        )
+   class Meta:
+       model = Inventario
+       fields = ['tienda' , 'coches', 'cantidad' , 'precio']
+       help_texts = {
+           'tienda' : ("indica la tienda que es"),
+           'cantidad' : ("Cantidad de coches")
+       }
+      
+   def __init__(self, *args, **kwargs):
+       self.request = kwargs.pop("request")
+       super(CrearInventarioForms, self).__init__ (*args, **kwargs)
+       tiendasDisponibles = Tienda.objects.filter(vendedor = self.request.user.vendedor).all()
+       self.fields["tienda"] = forms.ModelChoiceField(
+           queryset=tiendasDisponibles,
+           widget=forms.Select,
+           required=True,
+           empty_label="Ninguna"
+       )
 
 
 class BusquedaInventario(forms.Form):
@@ -201,3 +201,68 @@ class BusquedaInventarioForm(forms.Form):
     cantidad_max = forms.IntegerField(label='Cantidad máxima', required=False)
     precio_min = forms.IntegerField(label='Precio mínimo', required=False)
     precio_max = forms.IntegerField(label='Precio máximo', required=False)
+
+
+
+class ProductoAPIForm(forms.Form):
+    nombre = forms.CharField(max_length=100, label="Nombre")
+
+    def clean_nombre(self):
+        nombre = self.cleaned_data['nombre']
+        if len(nombre) < 5:
+            raise forms.ValidationError("El nombre debe tener al menos 5 caracteres.")
+        return nombre
+    
+
+
+
+
+
+class ProductoAPIForm2(forms.Form):
+    producto_id = forms.ChoiceField(label="Seleccionar Producto")
+    tienda = forms.CharField(max_length=100, label="Nombre de la Tienda")  # Puedes ajustarlo según tu modelo de tienda
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(ProductoAPIForm2, self).__init__(*args, **kwargs)
+
+        # Obtener tiendas disponibles para el vendedor
+        tiendasDisponibles = Tienda.objects.filter(vendedor=self.request.user.vendedor).all()
+        self.fields['tienda'] = forms.ModelChoiceField(
+            queryset=tiendasDisponibles,
+            widget=forms.Select,
+            required=True,
+        )
+
+        # Obtener productos desde la API con token de autenticación
+        token = "hydM8WXEPTEjVIm2n8T8BN0nIst7iz"  # Asegúrate de que este token sea el correcto
+        url = "http://127.0.0.1:8000/api/v1/productos/"  # URL de la API de productos
+        headers = {
+            "Authorization": f"Bearer {token}"
+        }
+
+        try:
+            # Realizar la solicitud a la API
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                productos = response.json()  # Suponemos que la respuesta es un JSON con los productos
+                productos_terceros = [(producto['id'], producto['nombre']) for producto in productos]
+            else:
+                productos_terceros = []
+        except requests.exceptions.RequestException as e:
+            # En caso de error con la solicitud a la API
+            print(f"Error al hacer la solicitud a la API: {e}")
+            productos_terceros = []
+
+        # Si no hay productos, mostrar un mensaje en el campo de productos
+        if productos_terceros:
+            self.fields["producto_id"] = forms.ChoiceField(
+                choices=[("", "Seleccione un producto")] + productos_terceros,
+                required=True,
+            )
+        else:
+            self.fields["producto_id"] = forms.ChoiceField(
+                choices=[("", "No se encontraron productos disponibles")],
+                required=True,
+            )
+
