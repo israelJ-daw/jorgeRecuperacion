@@ -580,27 +580,21 @@ def detalles_pago(request, id_clientes):
 
 
 def devolver_pedido(request, pedido_id):
-    # Recuperamos el pedido y verificamos si pertenece al cliente actual
     pedido = Pedidos.objects.filter(id=pedido_id, cliente=request.user.cliente).first()
 
-    # Cambiar el estado del pedido a 'dev' (devolución)
     pedido.estado = 'dev'
     pedido.save()
 
-    # Ahora, procesamos cada línea del pedido (cada coche)
-    for linea in pedido.lineapedidos_set.all():  # Accedemos a las líneas del pedido
-        coche = linea.coche  # El coche que fue pedido
-        cantidad_devuelta = linea.cantidad  # La cantidad de coches que se devuelve
+    for linea in pedido.lineapedidos_set.all():  
+        coche = linea.coche  
+        cantidad_devuelta = linea.cantidad  
 
-        # Actualizamos el stock del coche en la tienda
         inventario = Inventario.objects.filter(tienda=linea.tienda, coches=coche).first()
 
         if inventario:
-            # Aumentamos la cantidad de coches en el inventario de la tienda
             inventario.cantidad += cantidad_devuelta
             inventario.save()
 
-    # Finalmente, renderizamos la página de devolución
     return render(request, 'pago/devolver.html', {'pedido': pedido})
 
 
@@ -612,8 +606,6 @@ def lista_producto_pedidos(request):
 
 
 #API
-
-
 # LISTAR productos desde la API
 def listar_productos_api(request):
     headers = {"Authorization": "Bearer hydM8WXEPTEjVIm2n8T8BN0nIst7iz"} 
@@ -650,8 +642,6 @@ def crear_producto_api(request):
 
 
 # ELIMINAR producto a través de la API
-
-
 def eliminar_producto_api(request, producto_id):
     try:
         headers = {
@@ -681,11 +671,10 @@ def producto_form(request):
     if request.method == 'POST':
         form = ProductoAPIForm2(request.POST, request=request)
         if form.is_valid():
-            # Aquí obtienes el producto y la tienda seleccionada
+            # Aquí obtienes el producto y la tinda seleccionada
             producto_id = form.cleaned_data['producto_id']
             tienda = form.cleaned_data['tienda']
-            # Lógica para añadir el producto a la tienda, guardarlo, etc.
-            # O redirigir a una página de confirmación
+          
     else:
         form = ProductoAPIForm2(request=request)
 
