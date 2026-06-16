@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block contenido %}
+
+{% if user.is_authenticated %}
+
     {% if perms.tienda.view_cliente %}
     <div class="text-center mt-5">
         <h1>Bienvenido a la Tienda</h1>
@@ -13,94 +16,111 @@
     {% endif %}
 
     {% if user.rol == 2  %}
-    <div class="text-center mt-5" >
-       <h2>Vendedores</h2> 
+    <div class="text-center mt-5">
+        <h2>Vendedores</h2> 
         <a href="{% url 'lista_vendedores' %}" class="btn btn-primary">📋 Ver Vendedores</a>
     </div>
     {% endif %}
 
     {% if perms.tienda.view_coche %}
-    <div class="text-center mt-5" >
-       <h2>Coches</h2> 
-        <a href="{% url 'lista_coche' %}" class="btn btn-primary"> 🚗 Ver Coches</a>
+    <div class="text-center mt-5">
+        <h2>Coches</h2> 
+        <a href="{% url 'lista_coche' %}" class="btn btn-primary">🚗 Ver Coches</a>
     </div>
     {% endif %}
 
     {% if user.rol == 3 %}
-    <div class="text-center mt-5" >
-       <h2> Crear Coches</h2> 
-        <a href="{% url 'crear_coche' %}" class="btn btn-primary"> 🚗 Crear Coches</a>
+    <div class="text-center mt-5">
+        <h2>Crear Coches</h2> 
+        <a href="{% url 'crear_coche' %}" class="btn btn-primary">🚗 Crear Coches</a>
     </div>
-    {% endif%}
-    
+    {% endif %}
 
     {% if user.rol == 3 %}
-    <div class="text-center mt-5" >
-       <h2> Crear Tienda</h2> 
-        <a href="{% url 'crear_tienda' %}" class="btn btn-primary"> 🤑 Crear Tienda</a>
+    <div class="text-center mt-5">
+        <h2>Crear Tienda</h2> 
+        <a href="{% url 'crear_tienda' %}" class="btn btn-primary">🤑 Crear Tienda</a>
     </div>
-    {% endif%}
-
+    {% endif %}
 
     {% if user.rol == 3 %}
-    <div class="text-center mt-5" >
-       <h2> Ver Tiendas</h2> 
-        <a href="{% url 'lista_tienda' %}" class="btn btn-primary"> 👀 Ver Tienda</a>
+    <div class="text-center mt-5">
+        <h2>Ver Tiendas</h2> 
+        <a href="{% url 'lista_tienda' %}" class="btn btn-primary">👀 Ver Tienda</a>
     </div>
-    {% endif%} 
+    {% endif %}
 
     {% if perms.tienda.add_inventario %}
-    <div class="text-center mt-5" >
+    <div class="text-center mt-5">
         <h2>Añadir Productos</h2> 
-        <a href="{% url  'crear_inventario' %}" class="btn btn-primary"> Añadir Productos</a>
-    </div>
-    {% endif%}
-
-
-    {% if user.rol == 3 %}
-    <div class="text-center mt-5" >
-       <h2> Ver Productos</h2> 
-        <a href="{% url 'ver_productos' %}" class="btn btn-primary"> 👀 Todos Los Productos</a>
+        <a href="{% url  'crear_inventario' %}" class="btn btn-primary">Añadir Productos</a>
     </div>
     {% endif %}
 
+    {% if user.rol == 3 %}
+    <div class="text-center mt-5">
+        <h2>Ver Productos</h2> 
+        <a href="{% url 'ver_productos' %}" class="btn btn-primary">👀 Todos Los Productos</a>
+    </div>
+    {% endif %}
 
-    {% if user.rol == 2  %}
-    <div class="text-center mt-5" >
+    {% if user.rol == 2 %}
+    <div class="text-center mt-5">
         <h2>Buscar Productos</h2> 
-        <a href="{% url  'ver_productos' %}" class="btn btn-primary"> 👀 Buscar Productos</a>
+        <a href="{% url  'ver_productos' %}" class="btn btn-primary">👀 Buscar Productos</a>
     </div>
-    {% endif%}
+    {% endif %}
 
-    {% if user.rol == 2  %}
-    <div class="text-center mt-5" >
-        <h2>Listar Pedidos </h2> 
-        <a href="{% url  'lista_pedidos' %}" class="btn btn-primary"> Listar Pedidos</a>
+    {% if user.rol == 2 %}
+    <div class="text-center mt-5">
+        <h2>Listar Pedidos</h2> 
+        <a href="{% url  'lista_pedidos' %}" class="btn btn-primary">Listar Pedidos</a>
     </div>
-    {% endif%}
-    
+    {% endif %}
 
-    {% if user.rol == 2  %}
-    <div class="text-center mt-5" >
-        <h2>Ver mi pedido </h2> 
-        <a href="{% url  'lista_linea_pedidos' request.user.cliente.id %}" class="btn btn-primary"> Mi Pedido</a>
+    {% if user.rol == 2 %}
+    <div class="text-center mt-5">
+        <h2>Ver mi pedido</h2> 
+        <a href="{% url  'lista_linea_pedidos' request.user.cliente.id %}" class="btn btn-primary">Mi Pedido</a>
     </div>
-    {% endif%}
+    {% endif %}
 
-    {% if user.rol == 3  %}
-    <div class="text-center mt-5" >
-        <h2>Ver Productos Pedidos </h2> 
-        <a href="{% url  'productos_pedidos' %}" class="btn btn-primary"> Productos Pedidos </a>
+    {% if user.rol == 3 %}
+    <div class="text-center mt-5">
+        <h2>Ver Productos Pedidos</h2> 
+        <a href="{% url  'productos_pedidos' %}" class="btn btn-primary">Productos Pedidos</a>
     </div>
-    {% endif%}
+    {% endif %}
 
+    {% if user.is_authenticated %}
     <div class="text-center mt-5">
         <h2>Productos API</h2>
         <a href="{% url 'listar_productos_api' %}" class="btn btn-outline-primary m-2">📋 Listar productos API</a>
         <a href="{% url 'crear_producto_api' %}" class="btn btn-outline-success m-2">➕ Crear producto API</a>
-        <a href="{% url 'agregar_producto_a_tienda' %}" class="btn btn-outline-success m-2"> Añadir Producto-API Tienda</a>
-
+        <a href="{% url 'agregar_producto_a_tienda' %}" class="btn btn-outline-success m-2">Añadir Producto-API Tienda</a>
     </div>
+    {% endif %}
 
+{% else %}
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg border-0 text-center p-5" style="max-width: 500px;">
+        <div class="card-body">
+            <h1 class="display-5 text-danger mb-4">¡No has iniciado sesión!</h1>
+
+            <p class="lead mb-4">
+                Debes iniciar sesión para acceder a la tienda.
+            </p>
+
+            <div class="d-grid gap-2">
+                <a href="{% url 'login' %}" class="btn btn-primary">
+                    🔑 Iniciar sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
 
 {% endblock %}
